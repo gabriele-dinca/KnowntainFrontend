@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--mappa-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- pwa -->
+    <link rel="manifest" href="PWA/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!--solo per safari-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!--barra di stato trasparente (per safari)-->
+    
+    <title>Knowntain</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
