@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import vButton from "../components/utils/vButton.vue"
 
 const router = useRouter();
 
@@ -38,7 +39,8 @@ function register() {
     <input type="password" v-model="password" placeholder="Password" />
     <input type="password" v-model="confirmPassword" placeholder="Conferma password" />
 
-    <button @click="register">Registrati</button>
+    <vButton testo="Registrati" :fn="register" />
+    
 
     <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
 

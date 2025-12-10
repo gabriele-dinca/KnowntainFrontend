@@ -14,9 +14,9 @@
 
 <template>
   <div class="segnalazione-card">
-    <small>ID: {{ props.id }}</small>
-    <h3>{{ props.titolo }}</h3>
-    <p>{{ props.testo }}</p>
+    <small>ID: {{ id }}</small>
+    <h3>{{ titolo }}</h3>
+    <p>{{ testo }}</p>
     <Pulsanti 
       v-if="isDipendente"
       :id="props.id"

@@ -1,4 +1,5 @@
 <script setup>
+  import vButton from "../components/utils/vButton.vue"
     import { ref } from "vue"
     import { useRouter } from "vue-router"
 
@@ -10,7 +11,7 @@
     function login(isDipendente) {
       localStorage.setItem("isDipendente", isDipendente);
       localStorage.setItem('nome',username.value)
-      localStorage.setItem("token", "abc123")
+      localStorage.setItem("token", "abc123") // token fittizio
       router.push("/")
     }
 </script>
@@ -24,10 +25,11 @@
     <input type="password" placeholder="Password" v-model="password" />
 
     <div class="button-group">
-      <button class="btn-utente" @click="login('false')">Login Utente</button>
-      <button class="btn-dipendente" @click="login('true')">Login Dipendente</button>
+      <vButton testo="Login Utente" :fn="() => login('false')" />
+      <vButton testo="Login Dipendente" :fn="() => login('true')" />
     </div>
   </div>
+
   <div class="register-link">
     <RouterLink class="register-link" to="/register">
       Non hai un account? Registrati

@@ -1,13 +1,13 @@
 <script setup>
-    import segnalazione from "../utils/segnalazione.vue"
+    import segnalazione from "../utils/segnalazione.vue" //Anche se la segna inutilizzata, non togliere
+
+
+    //Segnalazioni test
     const segnalazioni = [
         { id: 1, titolo: 'Problema 1', testo: 'Testo della segnalazione 1' },
         { id: 2, titolo: 'Problema 2', testo: 'Testo della segnalazione 2' },
         { id: 3, titolo: 'Problema 3', testo: 'Testo della segnalazione 3' }
     ];
-    function crea() {
-        router.push('/segnalazioni/crea')
-    }
 
 </script>
 

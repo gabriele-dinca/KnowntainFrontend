@@ -1,4 +1,5 @@
 <script setup>
+  import vButton from "../../utils/vButton.vue"
   // Definisco le props che il componente riceve
   const props = defineProps({
     id: {
@@ -6,7 +7,6 @@
       required: true
     }
   })
-
   function revisiona(valida){
     //implementare logica che chiama le api e invia id del dipendente e valida true o false
   }
@@ -14,7 +14,13 @@
 
 <template>
   <div class="segnalazione-card">
-    <button @click="revisiona('true')">Accetta</button>
-    <button @click="revisiona('false')">Rifiuta</button>
+    <vButton
+      testo="Accetta"
+      :fn="()=>revisiona(true)"
+    />
+    <vButton
+      testo="Rifiuta"
+      :fn="()=>revisiona(false)"
+    />
   </div>
 </template>
