@@ -1,7 +1,7 @@
 <script setup>
   import vButton from '../components/utils/vButton.vue'
   import { useRouter } from "vue-router"
-  import mapComponent from "../components/map.vue"
+  import mapComponent from "../components/map/map.vue"
   const router = useRouter()
 
   function logout() {
