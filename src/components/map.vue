@@ -17,6 +17,7 @@
 </script>
 
 <template>
+    <h1>Mappa</h1>
     <div ref="mapContainer" class="mapContainer">
         
     </div>

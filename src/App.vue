@@ -1,9 +1,11 @@
 <script setup>
-    import mapComponent from './components/map.vue'
+    import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-
-    <h1>Mappa</h1>
-    <mapComponent/>
+    <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/segnalazioni">Segnalazioni</RouterLink>
+    </nav>
+    <RouterView />
 </template>
