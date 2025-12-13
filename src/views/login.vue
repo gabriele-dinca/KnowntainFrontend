@@ -2,6 +2,7 @@
   import vButton from "../components/utils/vButton.vue"
     import { ref } from "vue"
     import { useRouter } from "vue-router"
+    import { setLoggedUser } from "../states/user"
 
     const router = useRouter()
 
@@ -9,9 +10,13 @@
     const password = ref("")
 
     function login(isDipendente) {
-      localStorage.setItem("isDipendente", isDipendente);
-      localStorage.setItem('nome',username.value)
-      localStorage.setItem("token", "abc123") // token fittizio
+      if(!password.value || !username.value) return
+      const data = {
+        token: "test",
+        nome: username.value,
+        'isDipendente': isDipendente
+      }
+      setLoggedUser(data)
       router.push("/")
     }
 </script>

@@ -2,10 +2,11 @@
   import vButton from '../components/utils/vButton.vue'
   import { useRouter } from "vue-router"
   import mapComponent from "../components/map/map.vue"
+import { clearLoggedUser } from '../states/user'
   const router = useRouter()
 
   function logout() {
-    localStorage.removeItem("token")
+    clearLoggedUser()
     router.push("/login")
   }
 </script>
