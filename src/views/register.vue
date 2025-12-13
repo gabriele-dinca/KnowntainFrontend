@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import vButton from "../components/utils/vButton.vue"
+import { setLoggedUser } from "../states/user";
 
 const router = useRouter();
 
@@ -24,8 +25,16 @@ function register() {
     return;
   }
   //implementare logica che ti fa loggare
+  //le apiiiiiiiiiiiiiiii
+
+  const data = {
+    token: 'abc123',
+    nome: nome.value,
+    isDipendente: false
+  }
+  setLoggedUser(data);
   
-  router.push("/login");
+  router.push("/");
 }
 </script>
 
