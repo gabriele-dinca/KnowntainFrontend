@@ -23,7 +23,8 @@
     <div class="profilo-body">
       <div class="info">
         <span class="label">Punteggio</span>
-        <span class="value">{{ test.score }} punti</span>
+        <span class="value">{{ test.score }}</span>
+        <span><img src="./images.jpeg" alt=""></span>
       </div>
     </div>
   </div>
@@ -92,12 +93,20 @@
   padding: 12px 0;
 }
 
+.info img {
+  padding-top: 10px;
+  padding-left: 20px;
+  width: 40px;
+  height: auto;
+}
+
 .label {
   font-size: 14px;
   color: #666;
 }
 
 .value {
+  padding-left: 20px;
   font-size: 16px;
   font-weight: 600;
   color: #007bff;

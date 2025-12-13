@@ -17,12 +17,20 @@
 .dashboard {
   display: flex;
   gap: 30px;
+  /*max-width: 1200px;*/
+  width: 90vw;
+  flex-wrap: wrap;
+  /*margin: 90px auto;*/
+  /*padding: 0 20px;*/
 
-  max-width: 1200px;
-  margin: 90px auto;
-  padding: 0 20px;
+  /*align-items: flex-start;*/
+}
 
-  align-items: flex-start;
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+    width: 80vw;
+  }
 }
 
 /* PROFILO (fisso) */
