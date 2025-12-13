@@ -1,22 +1,24 @@
 <script setup>
-  import Pulsanti from '../utils/pulsanti.vue'
+  import segnalazione from '../../segnalazioni/utils/segnalazione.vue';
 
   // Props
   const props = defineProps({
     id: { type: Number, required: true },
     titolo: { type: String, required: true },
-    testo: { type: String, required: true }
+    testo: { type: String, required: true },
+    score: {type: Number, required: true}
   })
 
-  // Variabile per il template
-  const isDipendente = localStorage.getItem('isDipendente') === 'true'
 </script>
 
 <template>
   <div class="segnalazione-card">
-    <small>ID: {{ id }}</small>
-    <h3>{{ titolo }}</h3>
-    <p>{{ testo }}</p>
+    <segnalazione
+        :id="id"
+        :titolo="titolo"
+        :testo="testo"
+    />
+    <h3>{{ score }} punti</h3>
   </div>
 </template>
 

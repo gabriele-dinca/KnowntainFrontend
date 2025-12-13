@@ -1,5 +1,6 @@
 <script setup>
   import Pulsanti from '../utils/pulsanti.vue'
+  import segnalazione from './segnalazione.vue';
 
   // Props
   const props = defineProps({
@@ -14,9 +15,15 @@
 
 <template>
   <div class="segnalazione-card">
-    <small>ID: {{ id }}</small>
-    <h3>{{ titolo }}</h3>
-    <p>{{ testo }}</p>
+    <segnalazione
+        :id="id"
+        :titolo="titolo"
+        :testo="testo"
+    />
+    <Pulsanti 
+      v-if="isDipendente"
+      :id="props.id"
+    />
   </div>
 </template>
 

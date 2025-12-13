@@ -9,6 +9,7 @@
   <nav class="navbar">
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/segnalazioni">Segnalazioni</RouterLink>
+    <RouterLink to="/me">Profilo</RouterLink>
   </nav>
 </template>
 

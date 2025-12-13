@@ -1,5 +1,5 @@
 <script setup>
-    import segnalazione from "../utils/segnalazione.vue" //Anche se la segna inutilizzata, non togliere
+    import segnalazione from "../utils/segnalazioneDip.vue" //Anche se la segna inutilizzata, non togliere
 
 
     //Segnalazioni test

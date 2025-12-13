@@ -4,6 +4,7 @@ import LoginPage from '../views/login.vue'
 import Segnalazioni from '../components/segnalazioni/views/segnalazioni.vue'
 import RegisterPage from '../views/register.vue'
 import CreaSegnalazione from '../components/segnalazioni/views/creaSegnalazione.vue'
+import Dashboard from '../components/profilo/index.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
 const router = createRouter({
@@ -40,6 +41,11 @@ const router = createRouter({
           component: Segnalazioni,
         }
       ]
+    },
+    {
+      path: '/me',
+      meta: { requiresAuth: true},
+      component: Dashboard
     }
   ]
 })
