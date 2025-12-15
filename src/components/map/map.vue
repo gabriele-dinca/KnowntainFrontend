@@ -130,9 +130,11 @@
 <template>
     <!--<h1>Mappa</h1>-->
     <div class="container">
+        <vButton testo="Filtri" :fn="toggleFilters" id="filtersBtn"/>
         <div class="filters">
-            <vButton testo="Filtri" :fn="toggleFilters"/>
-            <mapFilter v-if="showFilters" :layers="geoJsonData" @update-selection="gestisciFiltro" class="menu" />
+            <Transition name="dropdown">
+                <mapFilter v-if="showFilters" :layers="geoJsonData" @update-selection="gestisciFiltro" class="menu" />
+            </Transition>
         </div>
        
         <div ref="mapContainer" class="mapContainer"></div>
@@ -149,15 +151,27 @@
     
     .menu {
         display: block;
+        padding: 50px;
+        height: 300px;
+    }
+
+    #filtersBtn {
+        position: absolute;
+        top: 20px;
+        right: 50px;
+        z-index: 1;
     }
 
     .filters  {
         /*display: none;*/
+        border-radius: 20px;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 90px;
+        right: 50px;
         z-index: 1;
-        background: #000;
+        background: #fff;
+        color: #000;
+        transition: all 1s cubic-bezier(.215, .61, .355, 1);
     }
     
     .mapContainer {
@@ -167,5 +181,25 @@
         z-index: 0;
         height: 100vh;
         width: 100vw;
+    }
+
+    /* fase di animazione */
+    .dropdown-enter-active,
+    .dropdown-leave-active {
+        transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+
+    /* stato chiuso */
+    .dropdown-enter-from,
+    .dropdown-leave-to {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    /* stato aperto */
+    .dropdown-enter-to,
+    .dropdown-leave-from {
+        max-height: 300px; /* da aumentare se serve */
+        opacity: 1;
     }
 </style>

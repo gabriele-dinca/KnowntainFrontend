@@ -16,7 +16,7 @@
 
 <template>
     <div id="map-filter-container">
-        <label for="filter">Filtro:</label>
+        <h3 for="filter">Filtri</h3>
 
         <div v-for="layer in layers">
             <label :for="layer.id">{{ layer.name }}</label>
@@ -26,5 +26,8 @@
 </template>
 
 <style>
+    #map-filter-container {
+        text-align: left;
+    }
 
 </style>
