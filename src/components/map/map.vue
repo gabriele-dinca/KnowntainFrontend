@@ -122,16 +122,51 @@
 </script>
 
 <template>
-    <h1>Mappa</h1>
-    <mapFilter :layers="geoJsonData" @update-selection="gestisciFiltro"/>
-    <div ref="mapContainer" class="mapContainer">
+    <!--<h1>Mappa</h1>-->
+    <div class="container">
+
+        <div class="filters">
+            <button>Filtri</button>
+            <mapFilter :layers="geoJsonData" @update-selection="gestisciFiltro"/>
+        </div>
+       
+        <div ref="mapContainer" class="mapContainer">
+    </div>
+    
         
     </div>
 </template>
 
 <style>
+    .container {
+        position: relative;
+        top: 0vh;
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    .filters button {
+
+    }
+
+    .menu {
+
+    }
+
+    .filters  {
+        /*display: none;*/
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        background: #000;
+    }
     .mapContainer {
-        height: 50vh;
-        width: 50vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        height: 100vh;
+        width: 100vw;
     }
 </style>

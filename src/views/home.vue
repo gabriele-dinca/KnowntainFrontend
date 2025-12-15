@@ -2,7 +2,7 @@
   import vButton from '../components/utils/vButton.vue'
   import { useRouter } from "vue-router"
   import mapComponent from "../components/map/map.vue"
-import { clearLoggedUser } from '../states/user'
+  import { clearLoggedUser } from '../states/user'
   const router = useRouter()
 
   function logout() {
@@ -14,8 +14,8 @@ import { clearLoggedUser } from '../states/user'
 
 <template>
   <div>
-    <h1>Benvenuto nella Home!</h1>
+    <!--<h1>Benvenuto nella Home!</h1>-->
     <mapComponent/>
-    <vButton testo="Logout" :fn="logout" />
+    <!---<vButton testo="Logout" :fn="logout" />-->
   </div>
 </template>

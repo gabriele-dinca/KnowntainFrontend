@@ -16,13 +16,18 @@
 <style scoped>
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 15px;
+  bottom: 10px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 10vh;
+  border-radius: 30px;
+  /*padding: 15px;*/
 
-  background-color: #333;
-  color: white;
+  background-color: #fff;
+  /*opacity: 0.8;*/
+  color: #333;
 
   display: flex;
   justify-content: center; /* centra gli elementi */

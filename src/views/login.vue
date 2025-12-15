@@ -48,6 +48,7 @@
 .login-container {
   max-width: 300px;
   margin: 50px auto;
+
 }
 
 /* Tutti gli elementi full-width */
