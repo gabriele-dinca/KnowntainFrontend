@@ -2,12 +2,14 @@
     import {onMounted, ref} from 'vue'
     import L from 'leaflet'
     import mapFilter from './utils/filter.vue'
+    import vButton from '../utils/vButton.vue'
 
     const emit = defineEmits(['layers-loaded'])
 
     const map = ref()
     const mapContainer = ref()
     const zoom = ref(12)
+    let showFilters = ref(false);
 
     // layer (dovrenno arrivare tramite chiamata API)
     const geoJsonData = [
@@ -119,21 +121,21 @@
             }
         })
     }
+
+    function toggleFilters() {
+        showFilters.value = !showFilters.value;
+    }
 </script>
 
 <template>
     <!--<h1>Mappa</h1>-->
     <div class="container">
-
         <div class="filters">
-            <button>Filtri</button>
-            <mapFilter :layers="geoJsonData" @update-selection="gestisciFiltro"/>
+            <vButton testo="Filtri" :fn="toggleFilters"/>
+            <mapFilter v-if="showFilters" :layers="geoJsonData" @update-selection="gestisciFiltro" class="menu" />
         </div>
        
-        <div ref="mapContainer" class="mapContainer">
-    </div>
-    
-        
+        <div ref="mapContainer" class="mapContainer"></div>
     </div>
 </template>
 
@@ -145,12 +147,8 @@
         width: 100vw;
     }
     
-    .filters button {
-
-    }
-
     .menu {
-
+        display: block;
     }
 
     .filters  {
@@ -161,6 +159,7 @@
         z-index: 1;
         background: #000;
     }
+    
     .mapContainer {
         position: absolute;
         top: 0;
