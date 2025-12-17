@@ -9,7 +9,6 @@
   })
 
   // Variabile per il template
-  const isDipendente = localStorage.getItem('isDipendente') === 'true'
 </script>
 
 <template>

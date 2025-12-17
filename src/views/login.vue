@@ -30,8 +30,8 @@
     <input type="password" placeholder="Password" v-model="password" />
 
     <div class="button-group">
-      <vButton testo="Login Utente" :fn="() => login('false')" />
-      <vButton testo="Login Dipendente" :fn="() => login('true')" />
+      <vButton testo="Login Utente" :fn="() => login(false)" />
+      <vButton testo="Login Dipendente" :fn="() => login(true)" />
     </div>
   </div>
 

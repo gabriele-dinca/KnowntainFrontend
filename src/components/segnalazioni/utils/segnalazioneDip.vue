@@ -1,6 +1,7 @@
 <script setup>
   import Pulsanti from '../utils/pulsanti.vue'
   import segnalazione from './segnalazione.vue';
+  import { loggedUser } from '../../../states/user.js'
 
   // Props
   const props = defineProps({
@@ -10,7 +11,6 @@
   })
 
   // Variabile per il template
-  const isDipendente = localStorage.getItem('isDipendente') === 'true'
 </script>
 
 <template>
@@ -21,7 +21,7 @@
         :testo="testo"
     />
     <Pulsanti 
-      v-if="isDipendente"
+      v-if="loggedUser.isDipendente"
       :id="props.id"
     />
   </div>
