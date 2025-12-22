@@ -1,11 +1,20 @@
 <script setup>
+  import vButton from '../../utils/vButton.vue'
+  import { clearLoggedUser } from '../../../states/user'
+  import { useRouter } from "vue-router"
+  const router = useRouter()
 
-    const test = {
-        nome: 'Mario',
-        cognome: 'Rossi',
-        nickname: 'Supermario',
-        score: 300
-    }
+  function logout() {
+    clearLoggedUser()
+    router.push("/login")
+  }
+
+  const test = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    nickname: 'Supermario',
+    score: 300
+  }
 </script>
 
 <template>
@@ -18,6 +27,8 @@
         {{ test.nome }} {{ test.cognome }}
       </h2>
       <p class="nickname">@{{ test.nickname }}</p>
+
+      <vButton testo="Logout" :fn="logout" />
     </div>
 
     <div class="profilo-body">

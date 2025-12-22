@@ -1,8 +1,10 @@
 <script setup>
     import { ref, watch } from 'vue'
+    import vButton from '../../utils/vButton.vue'
 
     const props = defineProps({
-        layers: Array
+        layers: Array,
+        resetSignal: Number
     })
 
     const emit = defineEmits(['update-selection'])
@@ -12,6 +14,16 @@
     watch(selectedLayers, (newSelection) => {
         emit('update-selection', newSelection)
     })
+
+    // se viene modificata la variabile resetFilters (in map.vue), rimuovo tutti i layer dalla mappa (resetto il filtro)
+    watch(() => props.resetSignal, () => {
+        clearFilters()
+    })
+
+    // funzione per azzerare il filtro (può essere usata solo all'interno di filter.vue)
+    function clearFilters() {
+        selectedLayers.value = []
+    }
 </script>
 
 <template>
@@ -22,6 +34,8 @@
             <label :for="layer.id">{{ layer.name }}</label>
             <input :id="layer.id" :value="layer.id" type="checkbox" v-model="selectedLayers">
         </div>
+
+        <vButton testo="Azzera" :fn="clearFilters"/>
     </div>
 </template>
 

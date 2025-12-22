@@ -18,6 +18,14 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
+
+        "icons": [
+          {
+            "src": "forest.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+          }
+        ]
       }
     })
   ],
