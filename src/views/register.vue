@@ -40,13 +40,14 @@ function register() {
 
 <template>
   <div class="register-container">
-    <h2>Registrazione</h2>
-
-    <input type="text" v-model="nome" placeholder="Nome" />
-    <input type="text" v-model="cognome" placeholder="Cognome" />
-    <input type="email" v-model="email" placeholder="Email" />
-    <input type="password" v-model="password" placeholder="Password" />
-    <input type="password" v-model="confirmPassword" placeholder="Conferma password" />
+    <h2>Registrati</h2>
+    <div class="fields">
+      <input type="text" v-model="nome" placeholder="Nome" />
+      <input type="text" v-model="cognome" placeholder="Cognome" />
+      <input type="email" v-model="email" placeholder="Email" />
+      <input type="password" v-model="password" placeholder="Password" />
+      <input type="password" v-model="confirmPassword" placeholder="Conferma password" />
+    </div>
 
     <vButton testo="Registrati" :fn="register" />
     
@@ -61,16 +62,19 @@ function register() {
 
 <style scoped>
 .register-container {
-  max-width: 300px;
-  margin: 50px auto;
+  padding: 50px;
+  border-radius: 30px;
+  background-color: #545151;
+  max-width: 400px;
+  /*margin: 0 auto;*/
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 input {
-  display: block;
-  margin: 10px 0;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
+    width: 100%;
 }
 
 button {
@@ -78,6 +82,7 @@ button {
   padding: 10px;
   margin-top: 15px;
   cursor: pointer;
+
 }
 
 .error {
@@ -89,13 +94,6 @@ button {
 
 .login-link {
   display: block;
-  margin-top: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #007bff;
-}
-
-.login-link:hover {
-  text-decoration: underline;
+  margin-top: 30px;
 }
 </style>

@@ -22,10 +22,8 @@
 </script>
 
 <template>
-  
-  <h2>Login</h2>
   <div class="login-container">
-
+    <h2>Login</h2>
     <input placeholder="Username" v-model="username" />
     <input type="password" placeholder="Password" v-model="password" />
 
@@ -33,22 +31,30 @@
       <vButton testo="Login Utente" :fn="() => login(false)" />
       <vButton testo="Login Dipendente" :fn="() => login(true)" />
     </div>
+
+    <div class="register-link">
+      <RouterLink class="register-link" to="/register">
+        Non hai un account? Registrati
+      </RouterLink>
+    </div>
   </div>
 
-  <div class="register-link">
-    <RouterLink class="register-link" to="/register">
-      Non hai un account? Registrati
-    </RouterLink>
-  </div>
+  
 </template>
 
 
 
 <style scoped>
 .login-container {
-  max-width: 300px;
-  margin: 50px auto;
-
+  padding: 50px;
+  border-radius: 30px;
+  background-color: #545151;
+  min-width: 400px;
+  /*margin: 0 auto;*/
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 /* Tutti gli elementi full-width */
@@ -60,12 +66,7 @@ button {
 }
 
 /* Input */
-input {
-  margin: 10px 0;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
+
 
 /* Container dei pulsanti */
 .button-group {
@@ -78,30 +79,14 @@ input {
 /* Pulsanti */
 button {
   padding: 12px;
-  border: none;
   border-radius: 6px;
   font-size: 15px;
   cursor: pointer;
   transition: 0.2s;
 }
-
-/* Login Utente */
-.btn-utente {
-  background-color: #3498db;
-  color: white;
+.register-link {
+  margin-top: 30px;
 }
 
-.btn-utente:hover {
-  background-color: #2d89c7;
-}
 
-/* Login Dipendente */
-.btn-dipendente {
-  background-color: #2ecc71;
-  color: white;
-}
-
-.btn-dipendente:hover {
-  background-color: #27b864;
-}
 </style>
