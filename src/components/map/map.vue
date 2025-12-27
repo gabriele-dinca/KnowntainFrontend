@@ -324,7 +324,7 @@
     .menu {
         display: block;
         padding: 50px;
-        height: 300px;
+        height: 350px;
     }
 
     #filtersBtn {
@@ -371,7 +371,7 @@
     /* stato aperto */
     .dropdown-enter-to,
     .dropdown-leave-from {
-        max-height: 300px; /* da aumentare se serve */
+        max-height: 350px; /* da aumentare se serve */
         opacity: 1;
     }
 
