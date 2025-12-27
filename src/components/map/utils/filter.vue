@@ -30,12 +30,12 @@
     <div id="map-filter-container">
         <h3 for="filter">Filtri</h3>
 
-        <div v-for="layer in layers">
+        <div v-for="layer in layers" id="filters">
             <input :id="layer.id" :value="layer.id" type="checkbox" v-model="selectedLayers">
             <label :for="layer.id">{{ layer.name }}</label>
         </div>
 
-        <vButton testo="Azzera" :fn="clearFilters"/>
+        <vButton testo="Azzera" :fn="clearFilters" id="azzera-btn"/>
     </div>
 </template>
 
@@ -43,5 +43,14 @@
     #map-filter-container {
         text-align: left;
     }
+
+    #azzera-btn {
+        margin-top: 15px;
+    }
+
+    input {
+        margin-right: 10px;
+    }
+    
 
 </style>
