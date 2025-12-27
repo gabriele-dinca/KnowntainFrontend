@@ -9,7 +9,7 @@
     const username = ref("")
     const password = ref("")
 
-    /*function login(isDipendente) {
+    function login(isDipendente) {
       if(!password.value || !username.value) return
       const data = {
         token: "test",
@@ -18,14 +18,14 @@
       }
       setLoggedUser(data)
       router.push("/")
-    }*/
+    }
 
     /***********************
     TODO: la richiesta funziona  */
     const HOST = import.meta.env.VITE_API_URL;
     const END_POINT = HOST + '/auth/login/';
 
-    async function login(isDipendente) {
+    /*async function login(isDipendente) {
       console.log(END_POINT);
       try {
         const response = await fetch(END_POINT, {
@@ -38,7 +38,7 @@
       } catch (error) {
         console.log(error);
       }
-    }
+    }*/
 
 </script>
 
