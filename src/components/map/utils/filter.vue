@@ -31,8 +31,8 @@
         <h3 for="filter">Filtri</h3>
 
         <div v-for="layer in layers">
-            <label :for="layer.id">{{ layer.name }}</label>
             <input :id="layer.id" :value="layer.id" type="checkbox" v-model="selectedLayers">
+            <label :for="layer.id">{{ layer.name }}</label>
         </div>
 
         <vButton testo="Azzera" :fn="clearFilters"/>
