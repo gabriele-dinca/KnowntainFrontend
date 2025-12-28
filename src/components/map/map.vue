@@ -11,7 +11,8 @@
     const mapContainer = ref()
     const zoom = ref(12)
     let showFilters = ref(false);
-    const resetFilters = ref(0)
+    const forcedFilterSelection = ref([])
+    const userPosition = ref(null)
 
     // layer (dovrenno arrivare tramite chiamata API)
     const geoJsonData = [
@@ -187,7 +188,7 @@
     const layersCache = {} // variabile in cui salvo i layer che servono all'utente come oggetti
     // fino a quando un layer non viene selezionato nel filtro, non viene nemmeno caricato
 
-    function gestisciFiltro(newSelection, userPosition) { //newSelection è l'array che mi arriva da filter.vue in cui ci sono gli id dei layer da mostrare 
+    function gestisciFiltro(newSelection) { //newSelection è l'array che mi arriva da filter.vue in cui ci sono gli id dei layer da mostrare 
         geoJsonData.forEach(obj => {
             // se il layer non esiste ancora in cache, lo creo (lazy creation) 
             if (!layersCache[obj.id]) {
@@ -195,13 +196,13 @@
             }
 
             // se mi è stata passata anche la posizione dell'utente, verifico se questo è dentro l'area di un poligono
-            if (userPosition) {                
+            if (userPosition.value) {                
                 const features = obj.data.type === 'FeatureCollection' ? obj.data.features : [obj.data]; // prendo le features dal geoJSON (in questo modo gestisco sia collections che feature singole)
 
                 const isInside = features.some(feature => {
                     // controllo se è un poligono (altrimenti turf crasha)
                     if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
-                        return booleanPointInPolygon(userPosition, feature); // se il punto è all'interno dell'area ritorna true, altrimenti false e interrompe direttamente il ciclo dato che sto usando .some
+                        return booleanPointInPolygon(userPosition.value, feature); // se il punto è all'interno dell'area ritorna true, altrimenti false e interrompe direttamente il ciclo dato che sto usando .some
                     }
                     return false;
                 });
@@ -226,6 +227,8 @@
                 }
             }
         })
+
+        userPosition.value = null;
     }
 
 
@@ -243,8 +246,8 @@
 
     // tolgo tutto dalla mappa
     function clearMap() {
-        // modifico resetFilter (banalmente incrementandola) così che la modofica venga 'intercettata' dal watch in filter.vue e venga resettato il filtro
-        resetFilters.value++;
+        // azzero i filtri della mappa
+        forcedFilterSelection.value = []
 
         // rimuovo qualsiasi altro layer della mappa (ad esempio vecchi marker della posizione dell'utente)
         map.value.eachLayer(layer => {
@@ -269,11 +272,12 @@
         // mostro i poligoni cui l'utente all'interno della loro area
         let allGeoJsonLayers = [];
         geoJsonData.forEach(obj => {
-            allGeoJsonLayers.push(obj.id);
+            allGeoJsonLayers.push(obj.id)
         })
 
-        const turfPoint = point([crd.longitude, crd.latitude]);
-        gestisciFiltro(allGeoJsonLayers,turfPoint);
+        userPosition.value = point([crd.longitude, crd.latitude])
+
+        forcedFilterSelection.value = allGeoJsonLayers // passo alla selezione forzata (dalla mappa) dei filtri tutti i layer, sarà poi gestisciFiltro a decidere cosa mostrare e cosa no
     }
 
     // errore nella localizzazione dell'utente
@@ -303,7 +307,7 @@
         <vButton testo="Filtri" :fn="toggleFilters" id="filtersBtn"/>
         <div class="filters">
             <Transition name="dropdown">
-                <mapFilter v-if="showFilters" :layers="geoJsonData" :reset-signal="resetFilters" @update-selection="gestisciFiltro" class="menu" />
+                <mapFilter v-show="showFilters" :layers="geoJsonData" :external-selection="forcedFilterSelection" @update-selection="gestisciFiltro" class="menu" />
             </Transition>
         </div>
 
@@ -356,9 +360,14 @@
     }
 
     /* fase di animazione */
-    .dropdown-enter-active,
+    .dropdown-enter-active {
+        transition: all 0.3s ease, opacity 0.5s ease;
+        overflow: hidden;
+    }
+
     .dropdown-leave-active {
-        transition: max-height 0.3s ease, opacity 0.2s ease;
+        transition: all 0.3s ease, opacity 0.2s ease;
+        overflow: hidden;
     }
 
     /* stato chiuso */
@@ -366,6 +375,8 @@
     .dropdown-leave-to {
         max-height: 0;
         opacity: 0;
+        padding-top: 0;
+        padding-bottom: 0;
     }
 
     /* stato aperto */
