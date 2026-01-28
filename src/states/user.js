@@ -2,21 +2,27 @@
 import { reactive } from 'vue'
 
 const loggedUser = reactive({
+    id: undefined,
+    email: undefined,
+    self: undefined,
     token: undefined,
-    nome: undefined,
-    isDipendente: undefined,
+    role: undefined
 })
 
 function setLoggedUser (data) {
+    loggedUser.id = data.id;
+    loggedUser.email = data.email;
+    loggedUser.self = data.self;
     loggedUser.token = data.token;
-    loggedUser.nome = data.nome;
-    loggedUser.isDipendente = data.isDipendente;
+    loggedUser.role = data.role;
 }
 
 function clearLoggedUser () {
+    loggedUser.id = undefined;
+    loggedUser.email = undefined;
+    loggedUser.self = undefined;
     loggedUser.token = undefined;
-    loggedUser.nome = undefined;
-    loggedUser.isDipendente = undefined;
+    loggedUser.role = undefined;
 }
 
 export { loggedUser, setLoggedUser, clearLoggedUser } 

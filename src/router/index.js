@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import WelcomePage from '../views/welcome.vue'
 import HomePage from '../views/home.vue'
 import LoginPage from '../views/login.vue'
 import Segnalazioni from '../components/segnalazioni/views/segnalazioni.vue'
@@ -10,6 +11,11 @@ import { loggedUser } from '../states/user'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: '/welcome',
+      name: 'welcome',
+      component: WelcomePage
+    },
     {
       path: '/login',
       name: 'login',
@@ -65,7 +71,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   if (requiresAuth && !loggedIn) {
-    next('/login');
+    next('/welcome');
   } else {
     next();
   }

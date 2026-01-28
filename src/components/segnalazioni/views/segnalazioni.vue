@@ -13,7 +13,7 @@
 
 <template>
     <div class="sig-display">
-        <div>
+        <div class="segnalazioni">
             <segnalazione v-for="segnalazione in segnalazioni"
                 :key="segnalazione.id"
                 :id="segnalazione.id"
@@ -31,6 +31,18 @@
 </template>
 
 <style scoped>
+
+.sig-display {
+    width: 100vw;
+    border: 1px solid green;
+}
+
+.segnalazioni {
+    width: 60%;
+    margin: 0 auto;
+    border: 1px solid red;
+}
+
 .add-btn {
   display: block;
   margin: 20px auto;

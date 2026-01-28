@@ -2,15 +2,17 @@
   import vButton from "../components/utils/vButton.vue"
     import { ref } from "vue"
     import { useRouter } from "vue-router"
-    import { setLoggedUser } from "../states/user"
+    import { loggedUser, setLoggedUser } from "../states/user"
 
     const router = useRouter()
 
-    const username = ref("")
-    const password = ref("")
+    const username = ref("");
+    const password = ref("");
 
-    function login(isDipendente) {
-      if(!password.value || !username.value) return
+    const errorMessage = ref("");
+
+    /*function login(isDipendente) {
+      if (!password.value || !username.value) return
       const data = {
         token: "test",
         nome: username.value,
@@ -18,14 +20,14 @@
       }
       setLoggedUser(data)
       router.push("/")
-    }
+    }*/
 
-    /***********************
+    /* **********************
     TODO: la richiesta funziona  */
     const HOST = import.meta.env.VITE_API_URL;
     const END_POINT = HOST + '/auth/login/';
 
-    /*async function login(isDipendente) {
+    async function login(isDipendente) {
       console.log(END_POINT);
       try {
         const response = await fetch(END_POINT, {
@@ -35,10 +37,21 @@
         });
         const data = await response.json();
         console.log(data);
+
+        if (!response.ok) {
+          // errore dal backend (401, 400, ecc.)
+          errorMessage.value = data.message;
+          return;
+        }
+        
+        setLoggedUser(data)
+        router.push("/")
+        // console.log(loggedUser);
       } catch (error) {
-        console.log(error);
+        errorMessage.value = "Errore di connessione al Server";
+        console.error(error);
       }
-    }*/
+    }
 
 </script>
 
@@ -52,6 +65,8 @@
       <vButton testo="Login Utente" :fn="() => login(false)" />
       <vButton testo="Login Dipendente" :fn="() => login(true)" />
     </div>
+
+    <p>{{ errorMessage }}</p>
 
     <div class="register-link">
       <RouterLink class="register-link" to="/register">
@@ -70,7 +85,7 @@
   padding: 50px;
   border-radius: 30px;
   background-color: #545151;
-  min-width: 400px;
+  width: 400px;
   /*margin: 0 auto;*/
   position: absolute;
   top: 10%;
@@ -110,5 +125,10 @@ button {
   margin-top: 30px;
 }
 
+@media (max-width: 1024px) {
+  .login-container {
+    width: 80%;
+   }
+}
 
 </style>

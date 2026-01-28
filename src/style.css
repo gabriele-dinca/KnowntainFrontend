@@ -88,3 +88,134 @@ input {
     background-color: #f9f9f9;
   }
 }
+
+/* ! Reset Gabriele Style --------------- */
+body,
+html {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    scroll-behavior: smooth;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+    margin: 0 0 1rem 0;
+    padding: 0;
+}
+
+ol,
+ul {list-style-type: none;}
+img {height: auto;}
+h1 {font-size: 5rem; font-weight: 800;}
+h2 {font-size: 3rem;}
+h3 {font-size: 2rem;}
+h4 {font-size: 1rem;}
+h5 {font-size: 0.8rem;}
+h6 {font-size: 0.6rem;}
+a {text-decoration: none}
+    
+.intro {
+    font-weight: 200;
+    text-transform: uppercase;
+}
+
+/* General Styling ************************* */
+
+/* Main Colors*/
+:root {
+    --knt-green: rgb(7, 114, 30);
+    --knt-white: #f5f5f5;
+    --knt-abs-white: rgb(255, 255, 255);
+}
+
+::selection {
+    color: var(--knt-white);
+    background: var(--knt-green);
+}
+
+/* Button Styling */
+.button {
+    border: none;
+    font-size: 1rem;
+    text-transform: uppercase;
+    background: var(--knt-green);
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0px 5px 5px #9a9a9a;
+    transition: all 0.5s cubic-bezier(.215, .61, .355, 1);
+    cursor: pointer;
+}
+
+.button a {
+    display: block;
+    padding: 14px 25px;
+    color: var(--knt-abs-white);
+    transition: all 1s cubic-bezier(.215, .61, .355, 1);
+}
+
+.button:hover {
+    transform: scale(1.08);
+}
+
+/* Arrow Button */
+.arrow-button {
+    color: var(--knt-abs-white);
+    margin-top: 30px;
+    position: relative;
+    font-size: 1rem;
+    text-transform: uppercase;
+    background: var(--knt-green);
+    color: var(--white);
+    text-decoration: none;
+    padding: 20px 80px 20px 24px;
+    display: inline-block;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.7s cubic-bezier(.215, .61, .355, 1);
+    cursor: pointer;
+}
+
+.arrow-button:hover {
+    background-color: var(--knt-abs-white);
+    color: var(--knt-green);
+}
+
+.arrow-button::after {
+    content: "→";
+    position: absolute;
+    top: 8px;
+    right: 40px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    color: var(--white);
+    font-size: 35px;
+    font-weight: bold;
+    transition: all 0.7s cubic-bezier(.215, .61, .355, 1);
+}
+
+.arrow-button:hover::after {
+    right: 25px;
+    color: var(--knt-green);
+}
+
