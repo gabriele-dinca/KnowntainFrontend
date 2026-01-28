@@ -55,7 +55,7 @@
       router.push("/");
     } catch (error) {
       errorMessage.value = "Errore di connessione al Server";
-      console.error(error);
+      console.log(error);
     }
   }
 </script>
