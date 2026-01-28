@@ -22,18 +22,19 @@
       router.push("/")
     }*/
 
-    /* **********************
-    TODO: la richiesta funziona  */
-    const HOST = import.meta.env.VITE_API_URL;
-    const END_POINT = HOST + '/auth/login/';
+    
 
     async function login(isDipendente) {
-      console.log(END_POINT);
+      /* **********************
+      TODO: la richiesta funziona  */
+      const HOST = import.meta.env.VITE_API_URL;
+      const END_POINT = HOST + '/auth/login/';
+      // console.log(END_POINT);
       try {
         const response = await fetch(END_POINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify( { email: username.value, password: password.value } ),
+          body: JSON.stringify( { email: username.value, password: password.value } )
         });
         const data = await response.json();
         console.log(data);
@@ -44,8 +45,8 @@
           return;
         }
         
-        setLoggedUser(data)
-        router.push("/")
+        setLoggedUser(data);
+        router.push("/");
         // console.log(loggedUser);
       } catch (error) {
         errorMessage.value = "Errore di connessione al Server";
@@ -66,7 +67,7 @@
       <vButton testo="Login Dipendente" :fn="() => login(true)" />
     </div>
 
-    <p>{{ errorMessage }}</p>
+    <p class="error-text" v-if="errorMessage">{{ errorMessage }}</p>
 
     <div class="register-link">
       <RouterLink class="register-link" to="/register">
@@ -82,9 +83,11 @@
 
 <style scoped>
 .login-container {
+  text-align: center;
   padding: 50px;
   border-radius: 30px;
-  background-color: #545151;
+  background-color: var(--knt-abs-white);
+  box-shadow: rgb(108, 108, 108) 10px 10px 20px;
   width: 400px;
   /*margin: 0 auto;*/
   position: absolute;
@@ -100,9 +103,6 @@ button {
   width: 100%;
   box-sizing: border-box; /* Impedisce che padding allarghi gli input/pulsanti */
 }
-
-/* Input */
-
 
 /* Container dei pulsanti */
 .button-group {

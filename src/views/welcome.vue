@@ -12,7 +12,7 @@ const goToRegister = () => router.push('/register');
 <template>
     <header id="header">
         <div class="header__logo">
-            <a href="index.html">
+            <a href="/welcome">
                  <img src="../../public/logo.png" alt="logo knowntain" class="img-res">
             </a>
         </div>
