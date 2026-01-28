@@ -6,6 +6,7 @@ import Segnalazioni from '../components/segnalazioni/views/segnalazioni.vue'
 import RegisterPage from '../views/register.vue'
 import CreaSegnalazione from '../components/segnalazioni/views/creaSegnalazione.vue'
 import Dashboard from '../components/profilo/index.vue'
+import NotFound from '../views/404.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
 const router = createRouter({
@@ -52,6 +53,12 @@ const router = createRouter({
       path: '/me',
       meta: { requiresAuth: true},
       component: Dashboard
+    },
+    {
+    // !---Deve essere l'ultima route
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
     }
   ]
 })

@@ -6,16 +6,16 @@
 
     const router = useRouter()
 
-    const username = ref("");
+    const email = ref("");
     const password = ref("");
 
     const errorMessage = ref("");
 
     /*function login(isDipendente) {
-      if (!password.value || !username.value) return
+      if (!password.value || !email.value) return
       const data = {
         token: "test",
-        nome: username.value,
+        nome: email.value,
         'isDipendente': isDipendente
       }
       setLoggedUser(data)
@@ -25,6 +25,11 @@
     
 
     async function login(isDipendente) {
+      // Controlli base
+      if (!email.value || !password.value) {
+        errorMessage.value = "Compila tutti i campi.";
+        return;
+      }
       /* **********************
       TODO: la richiesta funziona  */
       const HOST = import.meta.env.VITE_API_URL;
@@ -35,7 +40,7 @@
         const response = await fetch(END_POINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify( { email: username.value, password: password.value } )
+          body: JSON.stringify( { email: email.value, password: password.value } )
         });
         
         const data = await response.json();
@@ -61,7 +66,7 @@
 <template>
   <div class="login-container">
     <h2>Login</h2>
-    <input placeholder="Username" v-model="username" />
+    <input placeholder="Email" v-model="email" />
     <input type="password" placeholder="Password" v-model="password" />
 
     <div class="button-group">
