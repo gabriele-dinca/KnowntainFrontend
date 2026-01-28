@@ -28,6 +28,7 @@
       /* **********************
       TODO: la richiesta funziona  */
       const HOST = import.meta.env.VITE_API_URL;
+      console.log(HOST);
       const END_POINT = HOST + '/auth/login/';
       // console.log(END_POINT);
       try {
@@ -36,6 +37,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify( { email: username.value, password: password.value } )
         });
+        
         const data = await response.json();
         console.log(data);
 
@@ -125,10 +127,18 @@ button {
   margin-top: 30px;
 }
 
+
+
 @media (max-width: 1024px) {
   .login-container {
+    width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
     width: 80%;
-   }
+  }
 }
 
 </style>
