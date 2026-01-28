@@ -6,6 +6,7 @@
 
   const router = useRouter();
 
+  // Campi della richiesta
   const email = ref("");
   const nickname = ref("");
   const password = ref("");
@@ -13,23 +14,28 @@
   const nome = ref("");
   const cognome = ref("");
 
+  // Messaggio d'errore
   const errorMessage = ref("");
 
   async function register() {
-    // Controlli base
+    // Controllo che non vi siano campi vuoti
     if (!email.value || !password.value || !confirmPassword.value || !nickname.value || !nome.value || !cognome.value) {
-      errorMessage.value = "Compila tutti i campi.";
-      return;
-    }
-    if (password.value !== confirmPassword.value) {
-      errorMessage.value = "Le password non coincidono.";
+      errorMessage.value = "Tutti i campi sono obbligatori";
       return;
     }
 
+    // Controllo che il campo 'password' coincida con 'conferma password'
+    if (password.value !== confirmPassword.value) {
+      errorMessage.value = "Le password non coincidono";
+      return;
+    }
+
+    // Compongo l'URL per la richiesta 
+    const HOST = import.meta.env.VITE_API_URL;
+    const END_POINT = HOST + '/auth/register/';
+
     try {
-      // implementazione API **************
-      const HOST = import.meta.env.VITE_API_URL;
-      const END_POINT = HOST + '/auth/register/';
+      // Invio la richiesta POST al backend
       const response = await fetch(END_POINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,18 +48,22 @@
         })
       });
 
+      // Trasformo la risposta in formato JSON
       const data = await response.json();
       console.log(data);
 
+      // Gestisco eventuali errori dal backend (401, 400, ecc.)
       if (!response.ok) {
-        // errore dal backend (401, 400, ecc.)
         errorMessage.value = data.message;
         return;
       }
-        
+      
+      // Metto l'utente autenticato nel local Storage (come se fosse autenticato)
       setLoggedUser(data);
       router.push("/");
+      
     } catch (error) {
+      // In caso di errore non gestito dal backend, mostro questo messaggio
       errorMessage.value = "Errore di connessione al Server";
       console.log(error);
     }

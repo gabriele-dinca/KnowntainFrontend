@@ -4,63 +4,56 @@
     import { useRouter } from "vue-router"
     import { loggedUser, setLoggedUser } from "../states/user"
 
-    const router = useRouter()
+    const router = useRouter();
 
+    // Campi della richiesta
     const email = ref("");
     const password = ref("");
 
+    // Messaggio d'errore
     const errorMessage = ref("");
-
-    /*function login(isDipendente) {
-      if (!password.value || !email.value) return
-      const data = {
-        token: "test",
-        nome: email.value,
-        'isDipendente': isDipendente
-      }
-      setLoggedUser(data)
-      router.push("/")
-    }*/
-
     
+    // ! TODO: capire meglio come gestire isDipendente <==> backend
 
     async function login(isDipendente) {
-      // Controlli base
+      // Controllo che i campi siano compilati
       if (!email.value || !password.value) {
-        errorMessage.value = "Compila tutti i campi.";
+        errorMessage.value = "Inserisci username e password.";
         return;
       }
-      /* **********************
-      TODO: la richiesta funziona  */
+      
+      // Compongo l'URL per la richiesta 
       const HOST = import.meta.env.VITE_API_URL;
-      console.log(HOST);
       const END_POINT = HOST + '/auth/login/';
-      // console.log(END_POINT);
+
       try {
+        // Invio una richeista POST al backend
         const response = await fetch(END_POINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify( { email: email.value, password: password.value } )
         });
         
+        // Trasformo la risposta in formato JSON
         const data = await response.json();
         console.log(data);
 
+        // Gestisco eventuali errori dal backend (401, 400, ecc.)
         if (!response.ok) {
-          // errore dal backend (401, 400, ecc.)
           errorMessage.value = data.message;
           return;
         }
         
+        // Metto l'utente autenticato nel local Storage
         setLoggedUser(data);
         router.push("/");
-        // console.log(loggedUser);
+
       } catch (error) {
+        // In caso di errore non gestito dal backend, mostro questo messaggio
         errorMessage.value = "Errore di connessione al Server";
         console.log(error);
       }
     }
-
 </script>
 
 <template>
@@ -131,8 +124,6 @@ button {
 .register-link {
   margin-top: 30px;
 }
-
-
 
 @media (max-width: 1024px) {
   .login-container {
