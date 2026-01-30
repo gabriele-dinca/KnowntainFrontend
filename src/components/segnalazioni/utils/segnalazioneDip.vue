@@ -7,7 +7,7 @@
   const props = defineProps({
     id: { type: Number, required: true },
     titolo: { type: String, required: true },
-    testo: { type: String, required: true }
+    descrizione: { type: String, required: true }
   })
 
   // Variabile per il template
@@ -18,7 +18,7 @@
     <segnalazione
         :id="id"
         :titolo="titolo"
-        :testo="testo"
+        :testo="descrizione"
     />
     <Pulsanti 
       v-if="loggedUser.isDipendente"

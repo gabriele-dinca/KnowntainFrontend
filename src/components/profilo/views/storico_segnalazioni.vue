@@ -1,24 +1,23 @@
 <script setup>
     import segnalazione from '../utils/segnalazioneScore.vue';
 
-    //Segnalazioni test
-    let test = [
-        { id: 1, titolo: 'Problema 1', testo: 'Testo della segnalazione 1', score: 300 },
-        { id: 2, titolo: 'Problema 2', testo: 'Testo della segnalazione 2', score: 1000},
-        { id: 3, titolo: 'Problema 3', testo: 'Testo della segnalazione 3', score: 69}
-    ];
+  defineProps({
+    items: Array
+  });
+
 </script>
 
 <template>
     <div class="sig-display">
         <div>
-            <segnalazione v-for="sig in test"
-                :key="sig.id"
-                :id="sig.id"
-                :titolo="sig.titolo"
-                :testo="sig.testo"
-                :score="sig.score"
-            />
+          <segnalazione v-for="item in items"
+              :key="item.id"
+              :titolo="item.titolo"
+              :descrizione="item.descrizione"
+              :tipo="item.tipo"
+              :stato="item.stato"
+              :punti="item.punti"
+          />
         </div>
 
     </div>
@@ -26,9 +25,7 @@
 
 <style scoped>
 .sig-display {
-  max-width: 900px;
-  margin: 90px auto; /* spazio dalla navbar fissa */
-  padding: 0 20px;
+  padding: 40px 20px;
 }
 
 /* Contenitore della lista */
@@ -43,7 +40,7 @@
   background-color: #ffffff;
   border-radius: 14px;
   padding: 20px;
-
+  margin: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

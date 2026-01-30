@@ -3,22 +3,24 @@
 
   // Props
   const props = defineProps({
-    id: { type: Number, required: true },
     titolo: { type: String, required: true },
-    testo: { type: String, required: true },
-    score: {type: Number, required: true}
-  })
+    descrizione: { type: String, required: true },
+    tipo: { type: String, required: true },
+    stato: { type: String, required: true },
+    punti: {type: Number, required: true}
+  });
 
 </script>
 
 <template>
   <div class="segnalazione-card">
     <segnalazione
-        :id="id"
         :titolo="titolo"
-        :testo="testo"
+        :descrizione="descrizione"
+        :tipo="tipo"
+        :stato="stato"
     />
-    <h3>{{ score }} punti</h3>
+    <h3>{{ punti }} punti</h3>
   </div>
 </template>
 

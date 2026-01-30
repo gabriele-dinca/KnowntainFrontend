@@ -3,9 +3,10 @@
 
   // Props
   const props = defineProps({
-    id: { type: Number, required: true },
     titolo: { type: String, required: true },
-    testo: { type: String, required: true }
+    descrizione: { type: String, required: true },
+    tipo: { type: String, required: true },
+    stato: { type: String, required: true }
   })
 
   // Variabile per il template
@@ -13,9 +14,10 @@
 
 <template>
   <div class="segnalazione-card">
-    <small>ID: {{ id }}</small>
     <h3>{{ titolo }}</h3>
-    <p>{{ testo }}</p>
+    <h4>{{ tipo }}</h4>
+    <h5>Stato: {{ stato }}</h5>
+    <p>{{ descrizione }}</p>
   </div>
 </template>
 
@@ -26,6 +28,7 @@
     margin-bottom: 10px;
     border-radius: 6px;
     background-color: #f9f9f9;
+    cursor: pointer;
   }
   .segnalazione-card *{
     color: #666

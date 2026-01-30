@@ -5,28 +5,25 @@
   const router = useRouter()
 
   function logout() {
-    clearLoggedUser()
-    router.push("/login")
+    clearLoggedUser();
+    router.push("/login");
   }
 
-  const test = {
-    nome: 'Mario',
-    cognome: 'Rossi',
-    nickname: 'Supermario',
-    score: 300
-  }
+  defineProps({
+    user: Object
+  });
 </script>
 
 <template>
   <div class="profilo">
     <div class="profilo-header">
       <div class="avatar">
-        {{ test.nome.charAt(0) }}{{ test.cognome.charAt(0) }}
+        {{ user.nome.charAt(0) }}{{ user.cognome.charAt(0) }}
       </div>
       <h2 class="nome">
-        {{ test.nome }} {{ test.cognome }}
+        {{ user.nome }} {{ user.cognome }}
       </h2>
-      <p class="nickname">@{{ test.nickname }}</p>
+      <p class="nickname">@{{ user.nickname }}</p>
 
       <vButton testo="Logout" :fn="logout" />
     </div>
@@ -34,7 +31,7 @@
     <div class="profilo-body">
       <div class="info">
         <span class="label">Punteggio</span>
-        <span class="value">{{ test.score }}</span>
+        <span class="value">{{ user.punti }}</span>
         <span><img src="./images.jpeg" alt=""></span>
       </div>
     </div>
@@ -44,7 +41,7 @@
 <style scoped>
 .profilo {
   max-width: 420px;
-  margin: 80px auto;
+  /*margin: 60px;*/
   padding: 30px;
 
   background-color: #ffffff;

@@ -29,8 +29,4 @@
     color: var(--knt-green);
     border: 1px solid var(--knt-green);
   }
-  button:focus,
-  button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-  }
 </style>
