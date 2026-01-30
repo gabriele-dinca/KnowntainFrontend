@@ -6,6 +6,7 @@ import Segnalazioni from '../components/segnalazioni/views/segnalazioni.vue'
 import RegisterPage from '../views/register.vue'
 import CreaSegnalazione from '../components/segnalazioni/views/creaSegnalazione.vue'
 import Dashboard from '../components/profilo/index.vue'
+import Classifica from '../components/classifica/classifica.vue';
 import NotFound from '../views/404.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
@@ -51,8 +52,13 @@ const router = createRouter({
     },
     {
       path: '/me',
-      meta: { requiresAuth: true},
+      meta: { requiresAuth: true },
       component: Dashboard
+    },
+    {
+      path: '/classifica',
+      meta: { requiresAuth: true },
+      component: Classifica
     },
     {
     // !---Deve essere l'ultima route

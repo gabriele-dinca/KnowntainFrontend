@@ -14,8 +14,7 @@
 
 <template>
   <div>
-    <!--<h1>Benvenuto nella Home!</h1>-->
+    <!--Homepage-->
     <mapComponent/>
-    <!---<vButton testo="Logout" :fn="logout" />-->
   </div>
 </template>

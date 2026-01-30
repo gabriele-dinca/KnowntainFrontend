@@ -14,8 +14,8 @@
     }
 
     .loader {
-    border: 6px solid #f3f3f3; /* colore di sfondo della rotella */
-    border-top: 6px solid #007bff; /* colore della parte che gira */
+    border: 6px solid #bbbaba; /* colore di sfondo della rotella */
+    border-top: 6px solid var(--knt-blue); /* colore della parte che gira */
     border-radius: 50%;
     width: 100px;
     height: 100px;

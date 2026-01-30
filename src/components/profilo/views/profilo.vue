@@ -62,7 +62,7 @@
   height: 80px;
   margin: 0 auto 15px;
 
-  background-color: #007bff;
+  background-color: var(--knt-blue);
   color: white;
   border-radius: 50%;
 
@@ -117,7 +117,7 @@
   padding-left: 20px;
   font-size: 16px;
   font-weight: 600;
-  color: #007bff;
+  color: var(--knt-blue);
 }
 
 </style>
