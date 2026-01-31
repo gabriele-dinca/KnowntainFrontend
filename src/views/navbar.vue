@@ -98,14 +98,17 @@
 }
 
 /* Link alle pagine su Desktop */
-.nav-links {display: flex; gap: 40px;}
+.nav-links { display: flex; gap: 40px; }
+
+/* Link Attivo Desktop */
+.nav-links .router-link-exact-active { border-bottom: 3px solid var(--knt-green); }
 
 img {
   width: 40px;
   height: auto;
   transition: all 0.3s cubic-bezier(.215, .61, .355, 1);
 }
-img:hover { scale: 1.1; }
+img:hover { scale: 1.2; }
 
 /* Style dell'icona Hamburger Mobile */
 #hamburger {
@@ -171,9 +174,15 @@ img:hover { scale: 1.1; }
   color: #333;
   text-decoration: none;
   padding: 12px 0;
+  border-radius: 0 0 0 20px;
 }
 
-.mobile-link img { width: 30px; height: auto; }
+.mobile-link.router-link-exact-active {
+  border-right: 5px solid var(--knt-green);
+  background-color: var(--knt-white);
+}
+
+.mobile-link img { width: 30px; height: auto; margin-left: 20px; }
 
 /* stato iniziale */
 .mobile-menu-enter-from { transform: translateY(100%); opacity: 0; }

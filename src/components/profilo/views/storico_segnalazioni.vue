@@ -9,7 +9,7 @@
 
 <template>
     <div class="sig-display">
-        <div>
+        <div class="segnalazione-card">
           <segnalazione v-for="item in items"
               :key="item.id"
               :titolo="item.titolo"
@@ -19,27 +19,24 @@
               :punti="item.punti"
           />
         </div>
-
     </div>
 </template>
 
 <style scoped>
-.sig-display {
-  padding: 40px 20px;
-}
+.sig-display { padding: 50px 20px }
 
 /* Contenitore della lista */
 .sig-display > div {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  background-color: var(--knt-abs-white);
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 }
 
 /* (Opzionale) se vuoi uniformare le card segnalazione */
 .segnalazione-card {
-  background-color: #ffffff;
+  background-color: var(--knt-abs-white);
   border-radius: 14px;
-  padding: 20px;
   margin: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;

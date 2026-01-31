@@ -71,7 +71,7 @@
     </div>
 
     <div v-else class="dashboard">
-        <profilo :user="user" />
+        <profilo :user="user" class="profilo"/>
         <div class="storico-wrapper">
             <storico_segnalazioni :items="segnalazioni" />
         </div>
@@ -81,50 +81,48 @@
 <style>
 .dashboard {
   display: flex;
-  gap: 30px;
-  width: 90vw;
-  height: 85vh;
   flex-wrap: wrap;
   align-items: center;
+  gap: 30px;
+
+  width: 90vw;
+  height: 88vh;
+  padding-top: 50px;
   margin: 0 auto;
-  /*justify-content: space-evenly;*/
 }
+
+.profilo { flex: 1; }
+
+/* STORICO Scollabile */
+.storico-wrapper {
+  flex: 2;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  max-height: 100%;
+}
+
+/* Scrollbar */
+.storico-wrapper::-webkit-scrollbar { width: 8px; }
+.storico-wrapper::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 8px; }
+.storico-wrapper::-webkit-scrollbar-thumb:hover { background-color: #aaa; }
 
 @media (max-width: 768px) {
   .dashboard {
     margin-top: 30px;
     flex-direction: column;
     width: 80vw;
+    height: auto;
   }
-}
 
-/* PROFILO (fisso) */
-profilo {
-  flex: 1;
-}
+  .storico-wrapper {
+    width: 100%;
+    flex: none;
+    overflow-y: visible;
+  }
 
-/* STORICO SCROLLABILE */
-.storico-wrapper {
-  flex: 2;
-  height: 500px;
-  overflow-y: auto;  /* scroll verticale */
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-}
-
-/* Scrollbar più elegante (Chrome / Edge) */
-.storico-wrapper::-webkit-scrollbar {
-  width: 8px;
-}
-
-.storico-wrapper::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 8px;
-}
-
-.storico-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: #aaa;
+  .profilo { width: 100%; }
 }
 
 </style>

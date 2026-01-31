@@ -65,12 +65,15 @@
 <template>
   <div class="login-container">
     <h2>Login</h2>
-    <input placeholder="Email" v-model="email" />
-    <input :type="showPassword ? 'text' : 'password'" placeholder="Password" v-model="password" />
-    <div id="show-psw">
-      <input type="checkbox" name="show-psw" id="" @click="showPassword = !showPassword">
-      <label for="show-psw">Mostra Password</label>
-    </div>
+    <form @submit.prevent>
+      <input placeholder="Email" v-model="email" autocomplete="username" />
+      <input :type="showPassword ? 'text' : 'password'" placeholder="Password" v-model="password" autocomplete="password" />
+      <div id="show-psw">
+        <input type="checkbox" name="show-psw" id="" @click="showPassword = !showPassword">
+        <label for="show-psw">Mostra Password</label>
+      </div>
+    </form>
+    
     
     <div class="button-group">
       <vButton testo="Login Utente" :fn="() => login(false)" />

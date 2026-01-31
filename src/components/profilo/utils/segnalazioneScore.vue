@@ -27,7 +27,7 @@
 <style scoped>
   .segnalazione-card {
     border: 1px solid #ccc;
-    padding: 12px;
+    padding: 20px;
     margin-bottom: 10px;
     border-radius: 6px;
     background-color: #f9f9f9;
