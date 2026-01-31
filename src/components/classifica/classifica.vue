@@ -1,7 +1,7 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
-import { loggedUser } from '../../states/user';
-import Loader from '../utils/Loader.vue';
+    import { onBeforeMount, ref } from 'vue';
+    import { loggedUser } from '../../states/user';
+    import Loader from '../utils/Loader.vue';
 
     const loading = ref(true);
     const classifica = ref(null);
@@ -41,9 +41,7 @@ import Loader from '../utils/Loader.vue';
         }
     }
 
-    onBeforeMount(() => {
-        getStandings();
-    })
+    onBeforeMount(() => getStandings());
 </script>
 
 <template>
@@ -79,17 +77,18 @@ import Loader from '../utils/Loader.vue';
 </template>
 
 <style scoped>
+/* Wrapper Esterno */
 .classifica {
     margin-top: 40px;
     max-width: 80vw;
     margin: 50px auto 0 auto;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
 
+.classifica h2 { text-align: center; margin-bottom: 30px;}
+ul { list-style: none; padding: 0; }
+
+/* Singola riga della classifica */
 .row {
     display: grid;
     grid-template-columns: 40px 1fr 80px;
@@ -103,28 +102,30 @@ ul {
     cursor: pointer;
 }
 
+/* Posizione, nickname Utente e punti totali */
 .posizione { font-weight: 700; }
 .nickname { font-weight: 600; }
-
 .punti { text-align: right; font-weight: 700; }
 
+/* Top 3 */
 .pos-1 { background: #ffd900d7; } /* Oro */
 .pos-2 { background: #C0C0C0; } /* Argento */
 .pos-3 { background: #CD7F32; } /* Bronzo */
 
+/* Stile della riga che riguarda l'utente loggato (se presente in top 50) */
 .is-me > .nickname::after {
-  content: "Tu";
-  margin-left: 15px;
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--knt-green);
-  color: white;
-  font-weight: 600;
+    content: "Tu";
+    margin-left: 15px;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--knt-green);
+    color: white;
+    font-weight: 600;
 }
 
 .is-me {
-  border: 2px solid var(--knt-green);
-  box-shadow: 0 0 15px var(--knt-green);
+    border: 2px solid var(--knt-green);
+    box-shadow: 0 0 15px var(--knt-green);
 }
 </style>

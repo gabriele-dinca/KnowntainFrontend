@@ -5,9 +5,10 @@
 
   // Props
   const props = defineProps({
-    id: { type: Number, required: true },
     titolo: { type: String, required: true },
-    descrizione: { type: String, required: true }
+    descrizione: { type: String, required: true },
+    tipo: { type: String, required: true },
+    stato: { type: String, required: true }
   })
 
   // Variabile per il template
@@ -16,9 +17,10 @@
 <template>
   <div class="segnalazione-card">
     <segnalazione
-        :id="id"
-        :titolo="titolo"
-        :testo="descrizione"
+        :titolo="segnalazione.titolo"
+        :descrizione="segnalazione.descrizione"
+        :tipo="segnalazione.tipo"
+        :stato="segnalazione.stato"
     />
     <Pulsanti 
       v-if="loggedUser.isDipendente"
