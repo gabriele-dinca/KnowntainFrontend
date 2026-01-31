@@ -3,6 +3,7 @@
   import { useRouter } from "vue-router";
   import vButton from "../components/utils/vButton.vue"
   import { setLoggedUser } from "../states/user";
+import Loader from "../components/utils/Loader.vue";
 
   const router = useRouter();
 
@@ -14,10 +15,13 @@
   const nome = ref("");
   const cognome = ref("");
 
-  // Messaggio d'errore
-  const errorMessage = ref("");
+  const errorMessage = ref("");     // Messaggio d'errore
+  const showPassword = ref(false);  // Visibilità Password
+  const loading = ref(false);       // Loader
 
   async function register() {
+    
+
     // Controllo che non vi siano campi vuoti
     if (!email.value || !password.value || !confirmPassword.value || !nickname.value || !nome.value || !cognome.value) {
       errorMessage.value = "Tutti i campi sono obbligatori";
@@ -35,6 +39,8 @@
     const END_POINT = HOST + '/auth/register/';
 
     try {
+      loading.value = true;  // Parte il loader
+
       // Invio la richiesta POST al backend
       const response = await fetch(END_POINT, {
         method: 'POST',
@@ -55,6 +61,7 @@
       // Gestisco eventuali errori dal backend (401, 400, ecc.)
       if (!response.ok) {
         errorMessage.value = data.message;
+        loading.value = false;
         return;
       }
       
@@ -65,6 +72,7 @@
     } catch (error) {
       // In caso di errore non gestito dal backend, mostro questo messaggio
       errorMessage.value = "Errore di connessione al Server";
+      loading.value = false;
       console.log(error);
     }
   }
@@ -78,8 +86,12 @@
       <input type="text" v-model="cognome" placeholder="Cognome" />
       <input type="email" v-model="email" placeholder="Email" />
       <input type="email" v-model="nickname" placeholder="Nickname" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <input type="password" v-model="confirmPassword" placeholder="Conferma password" />
+      <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Password" />
+      <input :type="showPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Conferma password" />
+      <div id="show-psw">
+        <input type="checkbox" name="show-psw" id="" @click="showPassword = !showPassword">
+        <label for="show-psw">Mostra Password</label>
+      </div>
     </div>
 
     <vButton testo="Registrati" :fn="register" />
@@ -90,6 +102,8 @@
     <RouterLink class="login-link" to="/login">
       Hai già un account? Accedi
     </RouterLink>
+
+    <Loader v-if="loading" />
   </div>
 </template>
 
@@ -103,7 +117,7 @@
   /*margin: 0 auto;*/
   position: absolute;
   text-align: center;
-  top: 10%;
+  top: 3%;
   left: 50%;
   transform: translate(-50%);
 }
@@ -131,4 +145,15 @@ button {
   display: block;
   margin-top: 30px;
 }
+
+#show-psw {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#show-psw input[type="checkbox"] {
+  width: auto;
+}
+
 </style>
