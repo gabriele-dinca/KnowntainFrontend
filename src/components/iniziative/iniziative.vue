@@ -69,7 +69,6 @@
 </template>
 
 
-
 <style scoped>
 .iniziative {
     max-width: 80vw;

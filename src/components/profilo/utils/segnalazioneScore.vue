@@ -1,5 +1,5 @@
 <script setup>
-  import segnalazione from '../../segnalazioni/utils/segnalazione.vue';
+  import Segnalazione from '../../segnalazioni/utils/segnalazione.vue';
 
   // Props
   const props = defineProps({
@@ -14,34 +14,38 @@
 
 <template>
   <div class="segnalazione-card">
-    <segnalazione
-        :titolo="titolo"
-        :descrizione="descrizione"
-        :tipo="tipo"
-        :stato="stato"
+    <Segnalazione
+      :titolo="titolo"
+      :descrizione="descrizione"
+      :tipo="tipo"
+      :stato="stato"
     />
-    <h3>{{ punti }} punti</h3>
+    <div class="card-footer">
+      <span>{{ punti }} punti</span>
+    </div>
   </div>
 </template>
 
 <style scoped>
-  .segnalazione-card {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    background-color: #f9f9f9;
-  }
-  .segnalazione-card *{
-    color: #666
-  }
-  h3 {
-    margin: 0 0 8px 0;
-  }
-  p {
-    margin: 0 0 4px 0;
-  }
-  small {
-    color: #666;
-  }
+.segnalazione-card {
+  color: var(--knt-black);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.15s ease;
+}
+
+.segnalazione-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-footer {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2563eb;
+  margin-left: 20px;
+}
 </style>
