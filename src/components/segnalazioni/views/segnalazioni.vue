@@ -29,7 +29,7 @@
 
             // Trasformo la risposta in formato JSON
             const data = await response.json();
-            console.log(data);
+            
             
             loading.value = false;  // Loader Scopare
 
@@ -40,6 +40,7 @@
             }
 
             segnalazioni.value = data;
+            console.log(segnalazioni);
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
             errorMessage.value = "Errore di connessione al Server";
