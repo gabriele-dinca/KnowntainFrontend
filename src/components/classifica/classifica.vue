@@ -61,7 +61,7 @@
             ]"
         >
             <span class="posizione">
-            {{ index + 1 }}
+            {{ utente.posizione }}
             </span>
 
             <span class="nickname">
@@ -108,9 +108,11 @@ ul { list-style: none; padding: 0; }
 .punti { text-align: right; font-weight: 700; }
 
 /* Top 3 */
-.pos-1 { background: #ffd900d7; } /* Oro */
-.pos-2 { background: #C0C0C0; } /* Argento */
-.pos-3 { background: #CD7F32; } /* Bronzo */
+.pos-1 .posizione { color: var(--knt-green); } /* Oro */
+.pos-2 .posizione { color: var(--knt-green); } /* Argento */
+.pos-3 .posizione { color: var(--knt-green); } /* Bronzo */
+
+.pos-1, .pos-2, .pos-3 {background-color: #dddbdb; } 
 
 /* Stile della riga che riguarda l'utente loggato (se presente in top 50) */
 .is-me > .nickname::after {
@@ -126,6 +128,5 @@ ul { list-style: none; padding: 0; }
 
 .is-me {
     border: 2px solid var(--knt-green);
-    box-shadow: 0 0 15px var(--knt-green);
 }
 </style>

@@ -23,7 +23,7 @@
 </template>
 
 <style scoped>
-.sig-display { padding: 50px 20px }
+.sig-display { padding: 50px 20px; }
 
 /* Contenitore della lista */
 .sig-display > div {

@@ -14,16 +14,19 @@
   <nav class="navbar" :class="{ expanded: menuOpen }">
     <div class="nav-links">
       <RouterLink to="/">
-        <img src="/menu/mappa.svg" alt="mappa">
+        <img src="/menu/mappa.svg" alt="Mappa">
       </RouterLink>
       <RouterLink to="/segnalazioni">
-        <img src="/menu/segnalazioni.svg" alt="segnalazioni">
+        <img src="/menu/segnalazioni.svg" alt="Segnalazioni">
+      </RouterLink>
+      <RouterLink to="/iniziative">
+        <img src="/menu/iniziative.svg" alt="Iniziative">
       </RouterLink>
       <RouterLink to="/classifica">
-        <img src="/menu/classifica.svg" alt="classifica">
+        <img src="/menu/classifica.svg" alt="Classifica">
       </RouterLink>
       <RouterLink to="/me">
-        <img src="/menu/profilo.svg" alt="profilo">
+        <img src="/menu/profilo.svg" alt="Profilo">
       </RouterLink>
     </div>
 
@@ -37,29 +40,34 @@
 
 
   <!-- MENU MOBILE -->
-<Transition name="mobile-menu">
-  <div class="mobile-menu" v-if="menuOpen">
-    <RouterLink to="/" @click="menuOpen = false" class="mobile-link">
-      <img src="/menu/mappa.svg" alt="mappa" />
-      <span>Mappa</span>
-    </RouterLink>
+  <Transition name="mobile-menu">
+    <div class="mobile-menu" v-if="menuOpen">
+      <RouterLink to="/" @click="menuOpen = false" class="mobile-link">
+        <img src="/menu/mappa.svg" alt="Mappa" />
+        <span>Mappa</span>
+      </RouterLink>
 
-    <RouterLink to="/segnalazioni" @click="menuOpen = false" class="mobile-link">
-      <img src="/menu/segnalazioni.svg" alt="segnalazioni" />
-      <span>Segnalazioni</span>
-    </RouterLink>
+      <RouterLink to="/segnalazioni" @click="menuOpen = false" class="mobile-link">
+        <img src="/menu/segnalazioni.svg" alt="Segnalazioni" />
+        <span>Segnalazioni</span>
+      </RouterLink>
 
-    <RouterLink to="/classifica" @click="menuOpen = false" class="mobile-link">
-      <img src="/menu/classifica.svg" alt="classifica" />
-      <span>Classifica</span>
-    </RouterLink>
+      <RouterLink to="/iniziative" @click="menuOpen = false" class="mobile-link">
+        <img src="/menu/iniziative.svg" alt="Iniziative" />
+        <span>Iniziative</span>
+      </RouterLink>
 
-    <RouterLink to="/me" @click="menuOpen = false" class="mobile-link">
-      <img src="/menu/profilo.svg" alt="profilo" />
-      <span>Profilo</span>
-    </RouterLink>
-  </div>
-</Transition>
+      <RouterLink to="/classifica" @click="menuOpen = false" class="mobile-link">
+        <img src="/menu/classifica.svg" alt="Classifica" />
+        <span>Classifica</span>
+      </RouterLink>
+
+      <RouterLink to="/me" @click="menuOpen = false" class="mobile-link">
+        <img src="/menu/profilo.svg" alt="Profilo" />
+        <span>Profilo</span>
+      </RouterLink>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -151,7 +159,7 @@ img:hover { scale: 1.2; }
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50vh;
+  height: 60vh;
   background-color: var(--knt-abs-white);
   border-radius: 20px 20px 0 0;
   padding: 30px;

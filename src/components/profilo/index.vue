@@ -89,6 +89,7 @@
   height: 88vh;
   padding-top: 50px;
   margin: 0 auto;
+  margin-bottom: 20vh;
 }
 
 .profilo { flex: 1; }
