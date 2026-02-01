@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import WelcomePage from '../views/welcome.vue'
 import HomePage from '../views/home.vue'
 import LoginPage from '../views/login.vue'
@@ -12,7 +12,7 @@ import NotFound from '../views/404.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     {
       path: '/welcome',
