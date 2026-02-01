@@ -1,122 +1,197 @@
 <script setup>
   import { ref } from "vue"
   import vButton from "../../utils/vButton.vue";
-  import { useRouter } from "vue-router";
+  import { loggedUser } from "../../../states/user.js";
 
-  const router = useRouter()
-  const titolo = ref("")
-  const testo = ref("")
+  const titolo = ref("");
+  const descrizione = ref("");
+  const tipo = ref("");
 
-  function invia() {
+  const errorMessage = ref("");
+  const invioRiuscito = ref(false);
 
+  async function sendSegnalazione() {
+    if (!titolo.value || !descrizione.value || !tipo.value) {
+      errorMessage.value = "Tutti i campi sono obbligatori";
+      return
+    }
 
-    
+    try {
+      // Cerco di ottenere le coords dell'utente
+      const coords = await getUserLocation();
 
-    router.push("/segnalazioni")
+      // Compongo l'URL per la richiesta 
+      const HOST = import.meta.env.VITE_API_URL;
+      const END_POINT = HOST + '/segnalazioni';
+
+      // Invio una richeista POST al backend
+      const response = await fetch(END_POINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': loggedUser.token 
+        },
+        body: JSON.stringify({
+          titolo: titolo.value,
+          descrizione: descrizione.value,
+          tipo: tipo.value,
+          posizione: {
+            type: 'Point',
+            coordinates: [coords.longitude, coords.latitude]
+          }
+        })
+      });
+
+      // Trasformo la risposta in formato JSON
+      const data = await response.json();
+      console.log(data);
+
+      // Gestisco eventuali errori dal backend (401, 400, ecc.)
+      if (!response.ok) {
+        errorMessage.value = data.message;
+        return;
+      }
+      invioRiuscito.value = true;
+
+      titolo.value = "";
+      tipo.value = "";
+      descrizione.value = "";
+
+      setTimeout(() => {
+        invioRiuscito.value = false;
+      }, 3000);
+    } catch (err) {
+      errorMessage.value = err.message;
+      console.error("Errore localizzazione:", err.message);
+    }
   }
+
+  async function getUserLocation() {
+    if (!navigator.geolocation) {
+      throw new Error("Geolocalizzazione non supportata")
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    }
+
+    return await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        position => resolve(position.coords),
+        error => reject(error),
+        options
+      )
+    });
+  }
+
 </script>
 
 <template>
   
-  <h2>Crea segnalazione</h2>
 
   <div class="container">
 
-    <input type="text" placeholder="Titolo" v-model="titolo" />
-    <textarea
-      placeholder="Testo della segnalazione"
-      v-model="testo"
-      rows="5"
-    ></textarea>
+    <h2>📝 Crea Segnalazione</h2>
 
-    <div class="button-group">
-      <vButton testo="Invia" :fn="invia" />
-    </div>
+      <input type="text" placeholder="Titolo" v-model="titolo" />
+      <select v-model="tipo">
+        <option value="Seleziona un tipo" disabled selected hidden>Seleziona un Tipo</option>
+        <option value="Avvistamento Faunistico">Avvistamento Faunistico</option>
+        <option value="Condizioni Meteo">Condizioni Meteo</option>
+        <option value="Manutenzione Sentieri">Manutenzione Sentieri</option>
+        <option value="Caduta Alberi">Caduta Alberi</option>
+        <option value="Pericolo Frane">Pericolo Frane</option>
+        <option value="Pericolo Valanghe">Pericolo Valanghe</option>
+        <option value="Altro">Altro</option>
+      </select>
+
+      <textarea
+        placeholder="Descrizione"
+        v-model="descrizione"
+        rows="5"
+      ></textarea>
+
+      <p class="error-text" v-if="errorMessage">{{ errorMessage }}</p>
+      <p v-if="invioRiuscito">Segnalazione Ricevuta ✅</p>
+
+      <div class="button-group">
+        <vButton testo="Invia" :fn="sendSegnalazione" />
+      </div>
   </div>
 </template>
 
 <style scoped>
 .container {
-  max-width: 400px;
-  margin: 60px auto;
-  padding: 25px;
+  max-width: 600px;
+  height: auto;
+  margin: 30px auto 20vh auto;
+  padding: 30px;
 
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 h2 {
   text-align: center;
-  margin-top: 80px; /* spazio dalla navbar fissa */
-  margin-bottom: 20px;
-  font-size: 24px;
-  /*color: #333;*/
-}
-
-input {
-  display: block;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
-
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-
-  font-size: 14px;
-}
-
-input:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.button-group {
-  margin-top: 20px;
-}
-
-.btn-utente {
-  width: 100%;
-  padding: 12px;
-
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-
-  font-size: 16px;
+  margin-top: 24px;
+  margin-bottom: 50px;
   font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
 }
 
-.btn-utente:hover {
-  background-color: #0056b3;
-}
-
-.btn-utente:active {
-  transform: scale(0.98);
-}
-
-
+/* BASE INPUT */
+input,
+select,
 textarea {
   display: block;
   width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
 
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
 
   font-size: 14px;
   font-family: inherit;
+  background-color: #fff;
 }
 
+/* PLACEHOLDER */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* FOCUS */
+input:focus,
+select:focus,
 textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* SELECT specific */
+select {
+  cursor: pointer;
+}
+
+/* TEXTAREA */
+textarea {
+  resize: vertical;
+}
+
+/* BUTTON */
+.button-group {
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .container { width: 80vw; }
+  h2 { font-size: 40px; }
 }
 
 </style>

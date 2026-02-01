@@ -4,8 +4,10 @@
     import { onBeforeMount, ref } from "vue";
     import Loader from "../../utils/Loader.vue";
 
-    // Segnalazioni test
-    const segnalazioni = ref(null);
+
+    const segnalazioni = ref([]);
+
+    const errorMessage = ref(null);
 
     // Loader
     const loading = ref(true);
@@ -60,7 +62,7 @@
             </div>
             <Loader v-if="loading" />
             <segnalazione v-for="segnalazione in segnalazioni"
-                :key="segnalazione.id"
+                :key="segnalazione._id"
                 :titolo="segnalazione.titolo"
                 :descrizione="segnalazione.descrizione"
                 :tipo="segnalazione.tipo"
