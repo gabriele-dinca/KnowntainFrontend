@@ -1,5 +1,5 @@
 <script setup>
-    import segnalazione from "../utils/segnalazione.vue" //Anche se la segna inutilizzata, non togliere
+    import Segnalazione from "../utils/segnalazione.vue" //Anche se la segna inutilizzata, non togliere
     import { loggedUser } from "../../../states/user";
     import { onBeforeMount, ref } from "vue";
     import Loader from "../../utils/Loader.vue";
@@ -61,12 +61,13 @@
                 </RouterLink>
             </div>
             <Loader v-if="loading" />
-            <segnalazione v-for="segnalazione in segnalazioni"
-                :key="segnalazione._id"
-                :titolo="segnalazione.titolo"
-                :descrizione="segnalazione.descrizione"
-                :tipo="segnalazione.tipo"
-                :stato="segnalazione.stato"
+
+            <Segnalazione v-for="s in segnalazioni"
+                :key="s._id"
+                :titolo="s.titolo"
+                :descrizione="s.descrizione"
+                :tipo="s.tipo"
+                :stato="s.stato"
             />
         </div>
     </div>
