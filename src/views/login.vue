@@ -3,7 +3,7 @@
     import Loader from "../components/utils/Loader.vue";
     import { ref } from "vue";
     import { useRouter } from "vue-router";
-    import { loggedUser, setLoggedUser } from "../states/user";
+    import { setLoggedUser } from "../states/user";
 
     const router = useRouter();
 
@@ -15,13 +15,11 @@
     const showPassword = ref(false);  // Visibilità Password
     const loading = ref(false);       // Loader
 
-    
-    // ! TODO: capire meglio come gestire isDipendente <==> backend
 
-    async function login(isDipendente) {
+    async function login(ruolo_utente) {
       // Controllo che i campi siano compilati
       if (!email.value || !password.value) {
-        errorMessage.value = "Inserisci username e password.";
+        errorMessage.value = "Inserisci username e password";
         return;
       }
       
@@ -31,11 +29,16 @@
 
       try {
         loading.value = true;   // Parte il Loader
+
         // Invio una richeista POST al backend
         const response = await fetch(END_POINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify( { email: email.value, password: password.value } )
+          body: JSON.stringify({ 
+            email: email.value, 
+            password: password.value,
+            ruolo: ruolo_utente
+          })
         });
         
         // Trasformo la risposta in formato JSON
@@ -74,10 +77,9 @@
       </div>
     </form>
     
-    
     <div class="button-group">
-      <vButton testo="Login Utente" :fn="() => login(false)" />
-      <vButton testo="Login Dipendente" :fn="() => login(true)" />
+      <vButton testo="Login Utente" :fn="() => login('utente')" />
+      <vButton testo="Login Dipendente" :fn="() => login('dipendente')" />
     </div>
 
     <p class="error-text" v-if="errorMessage">{{ errorMessage }}</p>
@@ -90,11 +92,7 @@
 
     <Loader v-if="loading" />
   </div>
-
-  
 </template>
-
-
 
 <style scoped>
 .login-container {
@@ -104,7 +102,6 @@
   background-color: var(--knt-abs-white);
   box-shadow: rgb(108, 108, 108) 10px 10px 20px;
   width: 400px;
-  /*margin: 0 auto;*/
   position: absolute;
   top: 3%;
   left: 50%;
@@ -136,20 +133,16 @@ button {
   transition: 0.2s;
 }
 
-.register-link {
-  margin-top: 30px;
-}
+.register-link { margin-top: 30px; }
 
+/* Adattamento Tablet */
 @media (max-width: 1024px) {
-  .login-container {
-    width: 60%;
-  }
+  .login-container { width: 60%; }
 }
 
+/* Adattamento Smartphone */
 @media (max-width: 768px) {
-  .login-container {
-    width: 80%;
-  }
+  .login-container { width: 80%; }
 }
 
 #show-psw {
@@ -158,8 +151,6 @@ button {
   gap: 10px;
 }
 
-#show-psw input[type="checkbox"] {
-  width: auto;
-}
+#show-psw input[type="checkbox"] { width: auto; }
 
 </style>
