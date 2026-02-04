@@ -13,7 +13,7 @@ const goToRegister = () => router.push('/register');
     <header id="header">
         <div class="header__logo">
             <a href="/welcome">
-                 <img src="../../public/logo.png" alt="logo knowntain" class="img-res">
+                 <img src="/logo.png" alt="logo knowntain" class="img-res">
             </a>
         </div>
 
@@ -36,9 +36,15 @@ const goToRegister = () => router.push('/register');
     
     <footer id="footer">
         <div class="footer__content">
-            <a href="https://github.com/andreaNardin2005/Knowntain" target="_blank">
-                <img src="../../public/github.svg" alt="github" class="img-res">
+            <div class="links">
+                <a href="https://github.com/andreaNardin2005/Knowntain" target="_blank">
+                <img src="/github.svg" alt="github" class="img-res">
             </a>
+            <a href="/api-docs" target="_blank">
+                <img src="/api-docs.svg" alt="api-docs" class="img-res">
+            </a>
+            </div>
+            
             <div class="authors">
                 <span>Andrea Nardin</span>
                 <span>Nicolas Aresu</span>
@@ -93,7 +99,7 @@ const goToRegister = () => router.push('/register');
     }
 
     .cover {
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url('../../public/cover.jpg');
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url('/cover.jpg');
         text-align: left;
         color: var(--knt-abs-white);
         padding: 10px;
@@ -134,6 +140,13 @@ const goToRegister = () => router.push('/register');
         justify-content: start;
         gap: 40px;
         align-items: center;
+    }
+
+    .links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
     }
 
     .footer__content img {

@@ -1,7 +1,8 @@
 <script setup>
-    import {onMounted, ref, shallowRef} from 'vue'
+    import {onMounted, onBeforeMount , ref, shallowRef} from 'vue'
+    import { loggedUser } from '../../states/user'
     import L from 'leaflet'
-    import { booleanPointInPolygon, point } from '@turf/turf'
+    import { booleanPointInPolygon, geometry, point } from '@turf/turf'
     import mapFilter from './utils/filter.vue'
     import vButton from '../utils/vButton.vue'
 
@@ -14,6 +15,62 @@
     const forcedFilterSelection = ref([])
     const userPosition = ref(null)
 
+
+    // GET posizioni delle Segnalazioni ----------------------------------------
+    const segnalazioni = ref([]);
+    let markers = [];
+
+    async function getSegnalazioni() {
+        // Compongo l'URL per la richiesta 
+        const HOST = import.meta.env.VITE_API_URL;
+        const END_POINT = HOST + '/segnalazioni';
+
+        try {
+            // Invio una richeista POST al backend
+            const response = await fetch(END_POINT, {
+                method: 'GET',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'access-token': loggedUser.token
+                }
+            });
+
+            // Trasformo la risposta in formato JSON
+            const data = await response.json();
+            // Gestisco eventuali errori dal backend (401, 400, ecc.)
+            if (!response.ok) {
+                return;
+            }
+
+            segnalazioni.value = data;
+
+             
+
+            segnalazioni.value.forEach(element => {
+                markers.push({
+                    type: "Feature",
+                    properties: { nome: element.titolo },
+                    geometry: element.posizione
+                });
+            });
+
+    console.log(markers);
+
+
+        } catch (error) {
+            // In caso di errore non gestito dal backend, mostro questo messaggio
+            //errorMessage.value = "Errore di connessione al Server";
+
+            console.log(error);
+        }
+    }
+
+    onBeforeMount(() => getSegnalazioni());
+
+   
+
+
+
     // layer (dovrenno arrivare tramite chiamata API)
     const geoJsonData = [
         {
@@ -23,7 +80,7 @@
             style: { color: 'red' },
             data: {
                 type: "FeatureCollection",
-                features: [
+                features: markers /*[
                     {
                         type: "Feature",
                         properties: { nome: "Pizzeria Napoli", rating: 5 },
@@ -34,7 +91,7 @@
                         properties: { nome: "Sushi Zen", rating: 4 },
                         geometry: { type: "Point", coordinates: [11.1250, 46.0710] }
                     }
-                ]
+                ]*/
             }
         },
         {
@@ -311,7 +368,7 @@
             </Transition>
         </div>
 
-        <vButton testo="Mostra limitazioni in questa zona" :fn="getUserLocation" id="limitationsBtn"/>
+        <vButton testo="Mostra Limitazioni" :fn="getUserLocation" id="limitationsBtn"/>
        
         <div ref="mapContainer" class="mapContainer"></div>
     </div>
@@ -392,5 +449,11 @@
         top: 20px;
         left: 70px;
         z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+        #filtersBtn { right: 15px; }
+        .filters { right: 15px; }
+        #limitationsBtn { left: 50px; }
     }
 </style>

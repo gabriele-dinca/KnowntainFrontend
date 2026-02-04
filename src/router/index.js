@@ -8,6 +8,7 @@ import CreaSegnalazione from '../components/segnalazioni/views/creaSegnalazione.
 import Dashboard from '../components/profilo/index.vue'
 import Iniziative from '../components/iniziative/iniziative.vue';
 import Classifica from '../components/classifica/classifica.vue';
+import Swagger from '../views/api-docs.vue';
 import NotFound from '../views/404.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
@@ -23,6 +24,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage
+    },
+    {
+      path: '/api-docs',
+      name: 'api-docs',
+      component: Swagger
     },
     {
       path: '/register',
