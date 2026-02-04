@@ -1,10 +1,11 @@
 <script setup>
-    import {onMounted, onBeforeMount , ref, shallowRef} from 'vue'
+    import {onMounted, onBeforeMount , ref, shallowRef, computed} from 'vue'
     import { loggedUser } from '../../states/user'
     import L from 'leaflet'
     import { booleanPointInPolygon, geometry, point } from '@turf/turf'
     import mapFilter from './utils/filter.vue'
     import vButton from '../utils/vButton.vue'
+    import zoneEditor from './utils/zoneEditor.vue'
 
     const emit = defineEmits(['layers-loaded'])
 
@@ -14,6 +15,7 @@
     let showFilters = ref(false);
     const forcedFilterSelection = ref([])
     const userPosition = ref(null)
+    const isEmployee = computed(() => loggedUser.role === 'dipendente')
 
 
     // GET posizioni delle Segnalazioni ----------------------------------------
@@ -369,6 +371,9 @@
         </div>
 
         <vButton testo="Mostra Limitazioni" :fn="getUserLocation" id="limitationsBtn"/>
+
+        <!--TODO: rendere visibile i tool per aggiungere layer alla mappa solo ai dipendenti-->
+        <zoneEditor v-if="map" :map="map" />
        
         <div ref="mapContainer" class="mapContainer"></div>
     </div>
