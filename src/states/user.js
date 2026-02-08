@@ -15,6 +15,7 @@ function setLoggedUser (data) {
     loggedUser.self = data.self;
     loggedUser.token = data.token;
     loggedUser.role = data.role;
+    //console.log("Logged User", loggedUser);
 }
 
 function clearLoggedUser () {

@@ -57,9 +57,7 @@
       }
     }
 
-    onBeforeMount(() => {
-        getProfile();
-    })
+    onBeforeMount( () => getProfile() );
 
 </script>
 

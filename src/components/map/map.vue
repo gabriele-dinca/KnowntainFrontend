@@ -82,6 +82,7 @@
             style: { color: 'red' },
             data: {
                 type: "FeatureCollection",
+                // Arriva tramite chiamata API
                 features: markers /*[
                     {
                         type: "Feature",

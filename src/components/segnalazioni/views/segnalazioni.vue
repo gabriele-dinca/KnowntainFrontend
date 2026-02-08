@@ -1,9 +1,8 @@
 <script setup>
-    import Segnalazione from "../utils/segnalazione.vue" //Anche se la segna inutilizzata, non togliere
+    import Segnalazione from "../utils/segnalazione.vue"
     import { loggedUser } from "../../../states/user";
     import { onBeforeMount, ref } from "vue";
     import Loader from "../../utils/Loader.vue";
-
 
     const segnalazioni = ref([]);
 
@@ -11,7 +10,9 @@
 
     // Loader
     const loading = ref(true);
+    const voidSegnalazioni = ref(false);
 
+    // Chiamata API per prelevare le segnalazioni ---------------------------
     async function getSegnalazioni() {
         // Compongo l'URL per la richiesta 
         const HOST = import.meta.env.VITE_API_URL;
@@ -30,7 +31,6 @@
             // Trasformo la risposta in formato JSON
             const data = await response.json();
             
-            
             loading.value = false;  // Loader Scopare
 
             // Gestisco eventuali errori dal backend (401, 400, ecc.)
@@ -39,7 +39,13 @@
                 return;
             }
 
+            
             segnalazioni.value = data;
+
+            if (segnalazioni.value.length === 0) {
+                voidSegnalazioni.value = true;
+                errorMessage.value = 'Nessuna Segnalazione';
+            }
             console.log(segnalazioni);
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
@@ -50,6 +56,49 @@
     }
 
     onBeforeMount(() => getSegnalazioni());
+
+    // Chiamata API per la modifica dello stato ---------------------------
+
+    const msg = ref("");
+    const showInfo = ref(false);
+
+    async function aggiornaStato({ id, stato }) {
+
+        // Compongo l'URL per la richiesta 
+        const HOST = import.meta.env.VITE_API_URL;
+        const END_POINT = `${HOST}/segnalazioni/${id}`;
+
+        console.log("Patch segnalazione: ", END_POINT);
+        console.log("Nuovo Stato: ", stato);
+        
+        try {
+            // Invio una richeista POST al backend
+            const response = await fetch(END_POINT, {
+                method: 'PATCH',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'access-token': loggedUser.token
+                },
+                body: JSON.stringify({ stato: stato })
+            });
+            showInfo.value = true;
+
+            if (!response.ok) {
+                console.error("Errore dal backend:", response.status, data);
+                msg.value = "Errore dal backend:" + response.status;
+                return;
+            }
+
+            // Trasformo la risposta in formato JSON
+            const data = await response.json();
+            msg.value = `Segnalazione ${stato} con successo`;
+            console.log("Data", data);
+            getSegnalazioni();
+        } catch (error) {
+            
+        }
+
+    }
 </script>
 
 <template>
@@ -57,20 +106,31 @@
         <div class="segnalazioni">
             <div class="header-box">
                 <h2>⚠️ Segnalazioni</h2>
-                <RouterLink to="/segnalazioni/crea">
+                <RouterLink to="/segnalazioni/crea" v-if="loggedUser.role === 'utente'" >
                     <button class="add-btn">Aggiungi Segnalazione</button>
                 </RouterLink>
+                <p class="error-text" v-if="voidSegnalazioni">{{ errorMessage }}</p>
             </div>
             <Loader v-if="loading" />
 
-            <Segnalazione v-for="s in segnalazioni"
+            <Segnalazione
+                v-for="s in segnalazioni"
                 :key="s._id"
+                :id="s._id"
                 :titolo="s.titolo"
                 :descrizione="s.descrizione"
+                :data="s.data"
                 :tipo="s.tipo"
                 :stato="s.stato"
+                :canModerate="loggedUser.role === 'dipendente'"
+                @change-stato="aggiornaStato"
             />
         </div>
+    </div>
+
+    <div class="info-box" v-if="showInfo">
+        <p>{{ msg }}</p>
+        <button class="button" @click="showInfo =!showInfo">OK</button>
     </div>
 </template>
 
@@ -124,5 +184,43 @@
     .segnalazioni { width: 80%; margin-top: 10%;}
     .header-box { justify-content: center; }
     .header-box h2 { font-size: 40px; }
+}
+
+
+/* Info - Box */
+
+.info-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: var(--knt-black);
+    width: 300px;
+    height: 200px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.info-box p {
+    color: var(--knt-abs-white);
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.button {
+  text-transform: capitalize;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  background-color: var(--knt-blue);
+  box-shadow: none;
+
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

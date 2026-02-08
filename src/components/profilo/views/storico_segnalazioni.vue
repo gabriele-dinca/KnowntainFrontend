@@ -1,5 +1,5 @@
 <script setup>
-    import segnalazione from '../utils/segnalazioneScore.vue';
+    import Segnalazione from '../utils/segnalazioneScore.vue';
 
   defineProps({
     items: Array
@@ -10,10 +10,12 @@
 <template>
     <div class="sig-display">
         <div class="segnalazione-card">
-          <segnalazione v-for="item in items"
-              :key="item.id"
+          <Segnalazione v-for="item in items"
+              :key="item._id"
+              :id="item._id"
               :titolo="item.titolo"
               :descrizione="item.descrizione"
+              :data="item.data"
               :tipo="item.tipo"
               :stato="item.stato"
               :punti="item.punti"

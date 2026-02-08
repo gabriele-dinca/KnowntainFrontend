@@ -32,7 +32,6 @@
       <div class="info">
         <span class="label">Punteggio</span>
         <span class="value">{{ user.punti }}</span>
-        <span><img src="./images.jpeg" alt=""></span>
       </div>
     </div>
   </div>
