@@ -2,7 +2,7 @@
     import { onBeforeMount, ref } from 'vue';
     import { loggedUser } from '../../states/user';
     import Loader from '../utils/Loader.vue';
-    import IniziativaCard from './iniziativeCard.vue';
+    import IniziativaCard from './iniziativaCard.vue';
 
     const loading = ref(true);
     const iniziative = ref([]);
@@ -49,6 +49,10 @@
     <div class="iniziative">
     <h2>🌲 Iniziative</h2>
 
+    <RouterLink to="/iniziative/crea" v-if="loggedUser.role === 'dipendente'" >
+        <button class="add-btn">Nuova Iniziativa</button>
+    </RouterLink>
+
     <Loader v-if="loading" />
 
     <p v-else-if="errorMessage" class="error">
@@ -79,6 +83,28 @@ h2 {
     text-align: center;
     margin-bottom: 30px;
 }
+
+
+/* Style del Bottone */
+.add-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 30px;
+}
+
+.add-btn:hover { background-color: #0056b3; }
+.add-btn:active { background-color: #003f82; transform: scale(0.98); }
 
 </style>
 

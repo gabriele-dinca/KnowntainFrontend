@@ -7,11 +7,15 @@ import RegisterPage from '../views/register.vue'
 import CreaSegnalazione from '../components/segnalazioni/views/creaSegnalazione.vue'
 import Dashboard from '../components/profilo/index.vue'
 import Iniziative from '../components/iniziative/iniziative.vue';
+import CreaIniziativa from '../components/iniziative/creaIniziativa.vue';
 import Classifica from '../components/classifica/classifica.vue';
 import Swagger from '../views/api-docs.vue';
 import NotFound from '../views/404.vue'
 //import is from '../components/segnalazioni/index.vue'
 import { loggedUser } from '../states/user'
+
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -61,6 +65,11 @@ const router = createRouter({
       path: '/iniziative',
       meta: { requiresAuth: true },
       component: Iniziative
+    },
+    {
+      path: '/iniziative/crea',
+      meta: { requiresAuth: true },
+      component: CreaIniziativa
     },
     {
       path: '/classifica',
