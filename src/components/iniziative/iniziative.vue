@@ -8,7 +8,7 @@
     const iniziative = ref([]);
     const errorMessage = ref(null);
 
-    async function getStandings() {
+    async function getIniziative() {
         // Compongo l'URL per la richiesta 
         const HOST = import.meta.env.VITE_API_URL;
         const END_POINT = HOST + '/iniziative';
@@ -42,7 +42,7 @@
         }
     }
 
-    onBeforeMount(() => getStandings());
+    onBeforeMount(() => getIniziative());
 </script>
 
 <template>
@@ -63,10 +63,12 @@
       <IniziativaCard
         v-for="i in iniziative"
         :key="i._id"
+        :id="i._id"
         :titolo="i.titolo"
         :descrizione="i.descrizione"
         :punti-attuali="i.puntiAttuali"
         :punti-totali="i.puntiObiettivo"
+        @refresh="getIniziative"
       />
   </div>
 

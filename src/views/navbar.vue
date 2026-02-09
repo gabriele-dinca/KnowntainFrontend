@@ -101,6 +101,7 @@
 .navbar.expanded {
   width: 100vw;          
   height: 11vh;
+  border: none;
   border-radius: 0;
   bottom: 0;
 }
@@ -150,6 +151,7 @@ img:hover { scale: 1.2; }
     width: 200px;
     justify-content: center;
     align-items: center;
+    border: 2px solid var(--knt-black);
   }
 }
 

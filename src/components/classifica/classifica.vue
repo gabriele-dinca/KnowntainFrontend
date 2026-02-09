@@ -69,7 +69,7 @@
             </span>
 
             <span class="punti">
-            {{ utente.punti }} pts
+            {{ utente.puntiTot }} pts
             </span>
         </li>
         </ul>

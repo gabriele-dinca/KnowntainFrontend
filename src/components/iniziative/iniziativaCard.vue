@@ -1,33 +1,82 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import vButton from '../utils/vButton.vue';
+import { loggedUser } from '../../states/user';
 
 const props = defineProps({
-  titolo: {
-    type: String,
-    required: true,
-  },
-  descrizione: {
-    type: String,
-    required: true,
-  },
-  puntiAttuali: {
-    type: Number,
-    required: true,
-  },
-  puntiTotali: {
-    type: Number,
-    required: true,
-  },
+  id: { type: String, required: true },
+  titolo: { type: String, required: true },
+  descrizione: { type: String, required: true },
+  puntiAttuali: { type: Number, required: true },
+  puntiTotali: { type: Number, required: true }
 })
 
 const percentuale = computed(() => {
   if (props.puntiTotali === 0) return 0
   return Math.min(100, Math.round((props.puntiAttuali / props.puntiTotali) * 100))
-})
+});
+
+const errorMessage = ref("");
+const errorOccured = ref(false);
+
+const puntiAssegnati = ref(0);
+const confirmMsg = ref(false);
+const emit = defineEmits(['refresh'])
+
+async function assignPoints() {
+  // Compongo l'URL per la richiesta 
+  const HOST = import.meta.env.VITE_API_URL;
+  const END_POINT = `${HOST}/iniziative/${props.id}`;
+
+  try {
+    // Invio una richeista POST al backend
+    const response = await fetch(END_POINT, {
+      method: 'PATCH',
+      headers: { 
+        'Content-Type': 'application/json',
+        'access-token': loggedUser.token
+      },
+      body: JSON.stringify({ puntiAssegnati: puntiAssegnati.value })
+    });
+    
+    // Trasformo la risposta in formato JSON
+    const data = await response.json();
+
+    console.log(data);
+
+    // Gestisco eventuali errori dal backend (401, 400, ecc.)
+    if (!response.ok) {
+      errorOccured.value = true;
+      errorMessage.value = data.message;
+      return;
+    }
+
+    errorOccured.value = false;
+    confirmMsg.value = true;
+    setTimeout(() => {
+      confirmMsg.value = false;
+    }, 3000);
+
+    // Nuovo get delle iniziative
+    emit('refresh');
+  } catch (err) {
+    errorOccured.value = true;
+    errorMessage = err.message;
+    console.log(err);
+  }
+}
+
+
+let showInput = ref(false);
+
+function mostraInput() {
+  showInput.value =! showInput.value;
+}
+
 </script>
 
 <template>
-  <article class="iniziativa-card">
+  <div class="iniziativa-card">
     <header>
       <h3>{{ titolo }}</h3>
     </header>
@@ -43,7 +92,16 @@ const percentuale = computed(() => {
         <div class="progress-fill" :style="{ width: percentuale + '%' }" />
       </div>
     </div>
-  </article>
+    <div class="show-more"v-if="loggedUser.role === 'utente'">
+      <vButton testo="Assegna Punti" :fn="mostraInput" />
+    </div>
+    <div class="user-controls" v-if="showInput">
+      <input type="number" placeholder="Punti" v-model="puntiAssegnati">
+      <vButton testo="OK" :fn="assignPoints" />
+    </div>
+    <p v-if="confirmMsg">Iniziativa Aggiornata ✅</p>
+    <p class="error-text" v-if="errorOccured">{{ errorMessage }}</p>
+  </div>
 </template>
 
 <style scoped>
@@ -90,4 +148,16 @@ h3 {
   background: linear-gradient(90deg, #16a34a, #22c55e);
   transition: width 0.3s ease;
 }
+
+.show-more {
+  margin: 0 auto;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 </style>
