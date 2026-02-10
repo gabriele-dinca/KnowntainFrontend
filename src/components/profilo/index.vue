@@ -1,9 +1,11 @@
 <script setup>
     import profilo from './views/profilo.vue';
+    import ProfiloDipendente from './views/profiloDipendente.vue';
     import storico_segnalazioni from './views/storico_segnalazioni.vue';
     import { loggedUser } from '../../states/user.js';
     import { ref, onBeforeMount } from 'vue';
     import Loader from '../utils/Loader.vue';
+
 
     const user = ref(null);
     const segnalazioni = ref([]);
@@ -14,7 +16,14 @@
     async function getProfile() {
       // Compongo l'URL per la richiesta 
       const HOST = import.meta.env.VITE_API_URL;
-      const END_POINT = HOST + '/utenti/me';
+
+      let END_POINT = HOST;
+
+      if (loggedUser.role === 'utente') {
+        END_POINT += '/utenti/me';
+      } else {
+        END_POINT += '/dipendenti/me';
+      }
 
       try {
         // Invio una richeista POST al backend
@@ -36,18 +45,27 @@
           return;
         }
 
-        // splitto le informazioni ritonate
-        // user => dati della componente profilo
-        // segnalazioni => dati della componente storico_segnalzione
-        user.value = {
-          nome: data.nome,
-          cognome: data.cognome,
-          nickname: data.nickname,
-          punti: data.punti,
+        if (loggedUser.role === 'utente') {
+          // splitto le informazioni ritonate
+          // user => dati della componente profilo
+          // segnalazioni => dati della componente storico_segnalzione
+          user.value = {
+            nome: data.nome,
+            cognome: data.cognome,
+            nickname: data.nickname,
+            punti: data.punti
+          }
+          
+          segnalazioni.value = data.segnalazioni
+        } else {
+          user.value = {
+            nome: data.nome,
+            cognome: data.cognome,
+            email: data.email,
+            isAdmin: data.isAdmin
+          }
+          console.log(user);
         }
-
-        segnalazioni.value = data.segnalazioni
-
       } catch (error) {
         // In caso di errore non gestito dal backend, mostro questo messaggio
         errorMessage.value = "Errore di connessione al Server";
@@ -64,15 +82,19 @@
 <template>
     <Loader v-if="loading" />
 
-    <div v-else-if="errorMessage">
+    <p v-else-if="errorMessage" class="error-text">
       {{ errorMessage }}
-    </div>
+    </p>
 
-    <div v-else class="dashboard">
+    <div v-else-if="loggedUser.role === 'utente'" class="dashboard">
         <profilo :user="user" class="profilo"/>
         <div class="storico-wrapper">
             <storico_segnalazioni :items="segnalazioni" />
         </div>
+    </div>
+
+    <div v-else-if="loggedUser.role === 'dipendente'" class="dashboard">
+      <ProfiloDipendente :user="user" />
     </div>
 </template>
 

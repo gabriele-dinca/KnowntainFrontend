@@ -9,9 +9,7 @@
     router.push("/login");
   }
 
-  defineProps({
-    user: Object
-  });
+  defineProps({ user: Object });
 </script>
 
 <template>
@@ -100,12 +98,6 @@
   padding: 12px 0;
 }
 
-.info img {
-  padding-top: 10px;
-  padding-left: 20px;
-  width: 40px;
-  height: auto;
-}
 
 .label {
   font-size: 14px;
