@@ -38,15 +38,16 @@
                 errorMessage.value = data.message;
                 return;
             }
-
             
-            segnalazioni.value = data;
-
+            segnalazioni.value = data.segnalazioni;
+            console.log(segnalazioni);
+            
+            // Se non ci sono segnalazioni mostro un messaggio
             if (segnalazioni.value.length === 0) {
                 voidSegnalazioni.value = true;
                 errorMessage.value = 'Nessuna Segnalazione';
             }
-            console.log(segnalazioni);
+
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
             errorMessage.value = "Errore di connessione al Server";
@@ -62,14 +63,15 @@
     const msg = ref("");
     const showInfo = ref(false);
 
-    async function aggiornaStato({ id, stato }) {
+    async function aggiornaStato({ id, stato, punti }) {
 
         // Compongo l'URL per la richiesta 
         const HOST = import.meta.env.VITE_API_URL;
         const END_POINT = `${HOST}/segnalazioni/${id}`;
 
-        console.log("Patch segnalazione: ", END_POINT);
+        /*console.log("Patch segnalazione: ", END_POINT);
         console.log("Nuovo Stato: ", stato);
+        console.log("Punti Assegnati: ", punti);*/
         
         try {
             // Invio una richeista POST al backend
@@ -79,7 +81,10 @@
                     'Content-Type': 'application/json',
                     'access-token': loggedUser.token
                 },
-                body: JSON.stringify({ stato: stato })
+                body: JSON.stringify({
+                    stato: stato,
+                    punti: punti
+                })
             });
             showInfo.value = true;
 
@@ -91,13 +96,18 @@
 
             // Trasformo la risposta in formato JSON
             const data = await response.json();
+            console.log('Segnalazione Aggiornata', data);
+
             msg.value = `Segnalazione ${stato} con successo`;
-            console.log("Data", data);
+
+            // Refresh delle segnalazioni
             getSegnalazioni();
         } catch (error) {
-            
+            // In caso di errore non gestito dal backend, mostro questo messaggio
+            errorMessage.value = "Errore di connessione al Server";
+            loading.value = false;
+            console.log(error);
         }
-
     }
 </script>
 
@@ -188,7 +198,6 @@
 
 
 /* Info - Box */
-
 .info-box {
     position: fixed;
     top: 50%;
@@ -209,18 +218,18 @@
 }
 
 .button {
-  text-transform: capitalize;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: white;
-  background-color: var(--knt-blue);
-  box-shadow: none;
+    text-transform: capitalize;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    background-color: var(--knt-blue);
+    box-shadow: none;
 
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 </style>

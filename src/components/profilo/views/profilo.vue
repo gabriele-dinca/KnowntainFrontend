@@ -28,7 +28,7 @@
 
     <div class="profilo-body">
       <div class="info">
-        <span class="label">Punteggio</span>
+        <span class="label">Punti Disponibili</span>
         <span class="value">{{ user.punti }}</span>
       </div>
     </div>

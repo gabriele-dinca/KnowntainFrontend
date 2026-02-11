@@ -4,10 +4,19 @@
   import { setLoggedUser,loggedUser } from "../../../states/user.js";
   import Loader from "../../utils/Loader.vue";
 
+    function resetForm() {
+        nome.value = '';
+        cognome.value = '';
+        email.value = '';
+        password.value = '';
+        isAdmin.value = false;
+        showPassword.value = false;
+    }
+
 
   // Campi della richiesta
   const email = ref("");
-  const isAdmin = ref(null);
+  const isAdmin = ref(false);
   const password = ref("");
   const confirmPassword = ref("");
   const nome = ref("");
@@ -16,12 +25,12 @@
   const errorMessage = ref("");     // Messaggio d'errore
   const showPassword = ref(false);  // Visibilità Password
   const loading = ref(false);       // Loader
+  const confirmMsg = ref(false);
 
   async function register() {
     
-
     // Controllo che non vi siano campi vuoti
-    if (!email.value || !password.value || !confirmPassword.value || !nome.value || !cognome.value || !isAdmin.value) {
+    if (!email.value || !password.value || !confirmPassword.value || !nome.value || !cognome.value) {
       errorMessage.value = "Tutti i campi sono obbligatori";
       return;
     }
@@ -37,42 +46,49 @@
     const END_POINT = HOST + '/dipendenti/create';
 
     try {
-      loading.value = true;  // Parte il loader
+        loading.value = true;  // Parte il loader
 
-      // Invio la richiesta POST al backend
-      const response = await fetch(END_POINT, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'access-token': loggedUser.token
-        },
-        body: JSON.stringify( {
-          email: email.value, 
-          password: password.value,
-          nome: nome.value,
-          cognome: cognome.value,
-          isAdmin: isAdmin.value
-        })
-      });
+        // Invio la richiesta POST al backend
+        const response = await fetch(END_POINT, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'access-token': loggedUser.token
+            },
+            body: JSON.stringify( {
+                email: email.value, 
+                password: password.value,
+                nome: nome.value,
+                cognome: cognome.value,
+                isAdmin: isAdmin.value
+            })
+        });
 
-      // Trasformo la risposta in formato JSON
-      const data = await response.json();
-      console.log(data);
+        // Trasformo la risposta in formato JSON
+        const data = await response.json();
+        console.log(data);
 
-      // Gestisco eventuali errori dal backend (401, 400, ecc.)
-      if (!response.ok) {
-        errorMessage.value = data.message;
-        loading.value = false;
-        return;
-      }
-      
-      // Metto l'utente autenticato nel local Storage (come se fosse autenticato)
-      setLoggedUser(data);      
+        // Gestisco eventuali errori dal backend (401, 400, ecc.)
+        if (!response.ok) {
+            errorMessage.value = data.message;
+            loading.value = false;
+            return;
+        }
+
+        confirmMsg.value = true;
+        errorMessage.value = null
+        resetForm();
+
+        setTimeout(() => {
+        confirmMsg.value = false;
+        }, 3000);
+
     } catch (error) {
-      // In caso di errore non gestito dal backend, mostro questo messaggio
-      errorMessage.value = "Errore di connessione al Server";
-      loading.value = false;
-      console.log(error);
+        // In caso di errore non gestito dal backend, mostro questo messaggio
+        errorMessage.value = "Errore di connessione al Server";
+        console.log(error);
+    } finally {
+        loading.value = false;
     }
   }
 </script>
@@ -95,18 +111,18 @@
       <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Password" />
       <input :type="showPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Conferma password" />
       <div id="show-psw">
-        <input type="checkbox" name="show-psw" id="" @click="showPassword = !showPassword">
+        <input type="checkbox" name="show-psw" @click="showPassword = !showPassword">
         <label for="show-psw">Mostra Password</label>
       </div>
     </div>
 
     <vButton testo="Registra Account" :fn="register" />
     
-
+    <p id="confirm" v-if="confirmMsg">Nuovo Dipendente Creato ✅</p>
     <p class="error-text" v-if="errorMessage">{{ errorMessage }}</p>
 
     <Loader v-if="loading" />
-  </div>
+</div>
 </template>
 
 <style scoped>
@@ -207,6 +223,10 @@ button {
 
 #show-psw input[type="checkbox"] {
   width: auto;
+}
+
+#confirm {
+    margin-top: 30px;
 }
 
 </style>

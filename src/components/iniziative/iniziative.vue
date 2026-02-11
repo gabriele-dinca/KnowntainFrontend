@@ -34,7 +34,7 @@
                 return;
             }
 
-            iniziative.value = data;
+            iniziative.value = data.iniziative;
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
             errorMessage.value = "Errore di connessione al Server";

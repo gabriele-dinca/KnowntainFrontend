@@ -4,16 +4,16 @@ import { reactive } from 'vue'
 // Attrubuti particolari di utente
 function createUtente(data) {
   return {
-    nickname: data.nickname,
-    punti: data.punti,
-    puntiTot: data.puntiTot
+    nickname: data.profile.nickname,
+    punti: data.profile.punti,
+    puntiTot: data.profile.puntiTot
   }
 }
 
 // Attrubuti particolari di dipendente
 function createDipendente(data) {
   return {
-    isAdmin: data.isAdmin
+    isAdmin: data.profile.isAdmin
   }
 }
 
@@ -39,6 +39,7 @@ function setLoggedUser (data) {
     } else if (data.role === 'dipendente') {
         loggedUser.profile = createDipendente(data)
     }
+    console.log("Logged User: ", loggedUser);
 }
 
 function clearLoggedUser () {

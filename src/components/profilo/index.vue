@@ -50,21 +50,20 @@
           // user => dati della componente profilo
           // segnalazioni => dati della componente storico_segnalzione
           user.value = {
-            nome: data.nome,
-            cognome: data.cognome,
-            nickname: data.nickname,
-            punti: data.punti
+            nome: data.profilo.nome,
+            cognome: data.profilo.cognome,
+            nickname: data.profilo.nickname,
+            punti: data.profilo.punti
           }
           
-          segnalazioni.value = data.segnalazioni
+          segnalazioni.value = data.profilo.segnalazioni
         } else {
           user.value = {
-            nome: data.nome,
-            cognome: data.cognome,
-            email: data.email,
-            isAdmin: data.isAdmin
+            nome: data.user.nome,
+            cognome: data.user.cognome,
+            email: data.user.email,
+            isAdmin: data.user.isAdmin
           }
-          console.log(user);
         }
       } catch (error) {
         // In caso di errore non gestito dal backend, mostro questo messaggio

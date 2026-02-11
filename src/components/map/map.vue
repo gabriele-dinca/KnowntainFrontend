@@ -39,15 +39,15 @@
 
             // Trasformo la risposta in formato JSON
             const data = await response.json();
+
             // Gestisco eventuali errori dal backend (401, 400, ecc.)
             if (!response.ok) {
                 return;
             }
 
-            segnalazioni.value = data;
+            segnalazioni.value = data.segnalazioni;
 
-             
-
+            
             segnalazioni.value.forEach(element => {
                 markers.push({
                     type: "Feature",
