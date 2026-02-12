@@ -99,8 +99,11 @@ function mostraInput() {
       <input type="number" placeholder="Punti" v-model="puntiAssegnati">
       <vButton testo="OK" :fn="assignPoints" />
     </div>
-    <p v-if="confirmMsg">Iniziativa Aggiornata ✅</p>
-    <p class="error-text" v-if="errorOccured">{{ errorMessage }}</p>
+    <div class="infos">
+      <p v-if="confirmMsg">Iniziativa Aggiornata ✅</p>
+      <p class="error-text" v-if="errorOccured">{{ errorMessage }}</p>
+    </div>
+    
   </div>
 </template>
 
@@ -159,5 +162,6 @@ h3 {
   justify-content: center;
 }
 
+.infos p { text-align: center; }
 
 </style>

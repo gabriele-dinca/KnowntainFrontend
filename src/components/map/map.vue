@@ -20,15 +20,18 @@
 
     // GET posizioni delle Segnalazioni ----------------------------------------
     const segnalazioni = ref([]);
-    let markers = [];
+    const aree = ref([]);
 
-    async function getSegnalazioni() {
+    let markers = [];
+    let zones = [];
+
+    async function getMapItems() {
         // Compongo l'URL per la richiesta 
         const HOST = import.meta.env.VITE_API_URL;
-        const END_POINT = HOST + '/segnalazioni';
+        const END_POINT = HOST + '/mappa';
 
         try {
-            // Invio una richeista POST al backend
+            // Invio una richeista GET al backend
             const response = await fetch(END_POINT, {
                 method: 'GET',
                 headers: { 
@@ -42,12 +45,15 @@
 
             // Gestisco eventuali errori dal backend (401, 400, ecc.)
             if (!response.ok) {
+                console.error(response.status, response.body);
                 return;
             }
+            
 
             segnalazioni.value = data.segnalazioni;
+            aree.value = data.aree;
 
-            
+            // Segnalazini salvate nella array 'markers'
             segnalazioni.value.forEach(element => {
                 markers.push({
                     type: "Feature",
@@ -55,9 +61,21 @@
                     geometry: element.posizione
                 });
             });
+            console.log('Segnalazioni:', markers);
 
-    console.log(markers);
-
+            // Aree salvate nell'array 'zones'
+            aree.value.forEach(element => {
+                zones.push({
+                    type: "Feature",
+                    properties: {
+                        nome: element.titolo,
+                        descrizione: element.descrizione,
+                        tipo: element.tipo
+                    },
+                    geometry: element.posizione
+                });
+            });
+            console.log('Aree:', zones);
 
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
@@ -67,7 +85,7 @@
         }
     }
 
-    onBeforeMount(() => getSegnalazioni());
+    onBeforeMount(() => getMapItems());
 
    
 
@@ -104,7 +122,7 @@
             style: { color: 'green' },
             data: {
                 type: "FeatureCollection",
-                features: [
+                features: zones /*[
                     {
                         type: "Feature",
                         properties: { nome: "Parco delle Albere" },
@@ -119,7 +137,7 @@
                             ]]
                         }
                     }
-                ]
+                ]*/
             }
         },
         {
@@ -324,7 +342,7 @@
         clearMap()
 
         // aggiungo un marker diverso per la posizione attuale dell'utente
-        L.marker([crd.latitude, crd.longitude], { icon: getColoredIcon('red') }).addTo(map.value)
+        L.marker([crd.latitude, crd.longitude], { icon: getColoredIcon('green') }).addTo(map.value)
 
         // centro la visualizzazione della mappa sulla mia posizione con zoom default
         map.value.setView([crd.latitude, crd.longitude], zoom.value)
@@ -371,10 +389,10 @@
             </Transition>
         </div>
 
-        <vButton testo="Mostra Limitazioni" :fn="getUserLocation" id="limitationsBtn"/>
+        <vButton testo="La Mia Posizione" :fn="getUserLocation" id="position-btn"/>
 
         <!--TODO: rendere visibile i tool per aggiungere layer alla mappa solo ai dipendenti-->
-        <zoneEditor v-if="map" :map="map" />
+        <zoneEditor v-if="map && loggedUser.role==='dipendente'" :map="map" />
        
         <div ref="mapContainer" class="mapContainer"></div>
     </div>
@@ -450,7 +468,7 @@
     }
 
 
-    #limitationsBtn {
+    #position-btn {
         position: absolute;
         top: 20px;
         left: 70px;
@@ -460,6 +478,6 @@
     @media (max-width: 768px) {
         #filtersBtn { right: 15px; }
         .filters { right: 15px; }
-        #limitationsBtn { left: 50px; }
+        #position-btn { left: 50px; }
     }
 </style>
