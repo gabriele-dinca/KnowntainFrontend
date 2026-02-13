@@ -6,6 +6,7 @@
     import 'leaflet-draw/dist/leaflet.draw.css'
     import { loggedUser } from '../../../states/user'
     import vButton from '../../utils/vButton.vue'
+    import * as turf from '@turf/turf'
 
     // definisco le props e gli eventi
     const props = defineProps({
@@ -110,12 +111,23 @@
 
         let geoJsonData
 
+        // normalizza layer: se è un cerchio, lo converte in poligono usando turf (quello che uso anche per controllare se un punto è interno ad uun'area)
+        function normalizza(layer) {
+            if (layer instanceof L.Circle) {
+                const center = layer.getLatLng()
+                const radius = layer.getRadius()
+                // turf.circle crea un poligono a partire dal centro e raggio
+                return turf.circle([center.lng, center.lat], radius / 1000, { steps: 100, units: 'kilometers' }) // gli step sono i punti di precisione (avendo il layer in un poligono, più sono e più sarà preciso il cerchio)
+            }
+            return layer.toGeoJSON()
+        }
+
         // se ho una sola forma, salvo il GeoJSON singolo
         if (layerDisegnati.length === 1) {
-            geoJsonData = layerDisegnati[0].toGeoJSON()
+            geoJsonData = normalizza(layerDisegnati[0])
         } else {
             // se ho più forme, creo una FeatureCollection
-            const features = layerDisegnati.map(layer => layer.toGeoJSON())
+            const features = layerDisegnati.map(layer => normalizza(layer))
             geoJsonData = {
                 type: 'FeatureCollection',
                 features: features
