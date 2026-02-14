@@ -27,6 +27,11 @@
     const mostraInputNome = ref(false) // mostra il campo per inserire il nome
     const mostraAggiungiForma = ref(false) // mostra i pulsanti per aggiungere altre forme o salvare
     const nomeZona = ref('') // nome della zona inserito dall'utente
+    const descrizioneZona = ref('') // nome della zona inserito dall'utente
+    const tipoZona = ref('') // nome della zona inserito dall'utente
+
+    // variabile per il controllo che l'utente abbia inserito nome, descrizione e tipo quando salva
+    const errorMessage = ref(null)
 
     onMounted(() => {
         console.log('ZoneEditor montato, map:', props.map)
@@ -89,6 +94,8 @@
         mostraInputNome.value = false // nascondo l'input del nome
         mostraAggiungiForma.value = false // nascondo i pulsanti
         nomeZona.value = '' // pulisco il nome
+        descrizioneZona.value = '' // pulisco il nome
+        tipoZona.value = '' // pulisco il nome
     }
 
     // funzione per aggiungere un'altra forma alla zona
@@ -105,7 +112,22 @@
     // funzione per salvare la zona
     function salvaZona() {
         // controllo che il nome sia stato inserito e che ci sia almeno una forma
-        if (!nomeZona.value || layerDisegnati.length === 0) {
+        if (!nomeZona.value) {
+            errorMessage.value = "Il nome è obbligatorio"
+            return
+        }
+
+        if (!descrizioneZona.value) {
+            errorMessage.value = "La descrizione è obbligatorio"
+            return
+        }
+
+        if (!tipoZona.value) {
+            errorMessage.value = "Il tipo è obbligatorio"
+            return
+        }
+
+        if (layerDisegnati.length === 0) {
             return
         }
 
@@ -136,11 +158,15 @@
 
         const datiZona = {
             nome: nomeZona.value,
+            descrizione: descrizioneZona.value,
+            tipo: tipoZona.value,
             geojson: geoJsonData
         }
 
         // per ora stampo solo il layer in console
         console.log('Nome zona:', nomeZona.value)
+        console.log('Descrizione:', descrizioneZona.value)
+        console.log('Tipo:', tipoZona.value)
         console.log(JSON.stringify(geoJsonData, null, 2))
 
         //TODO: chiamare le API per inserire il nuovo layer nel DB
@@ -152,6 +178,8 @@
         layerDisegnati = []
         mostraInputNome.value = false
         nomeZona.value = ''
+        descrizioneZona.value = ''
+        tipoZona.value = ''
 
         // emetto l'evento per notificare che la zona è stata creata
         emit('zone-created', datiZona)
@@ -187,7 +215,31 @@
                 v-model="nomeZona" 
                 placeholder="Nome zona" 
                 class="zone-name-input"
+                required
             />
+            <input 
+                type="text" 
+                v-model="descrizioneZona" 
+                placeholder="Descrizione" 
+                class="zone-name-input"
+                required
+            />
+            <select v-model="tipoZona" placeholder="Tipologia" class="zone-name-input" required>
+                <option value="Flora">Flora</option>
+                <option value="Fauna">Fauna</option>
+                <option value="Aree Protette">Aree Protette</option>
+                <option value="Boschi e Foreste">Boschi e Foreste</option>
+                <option value="Prati e Pascoli">Prati e Pascoli</option>
+                <option value="Corsi d'acqua">Corsi d'acqua</option>
+                <option value="Laghi e Bacini">Laghi e Bacini</option>
+                <option value="Ghiacciai e Nevi Perpetue">Ghiacciai e Nevi Perpetue</option>
+                <option value="Formazioni Rocciose">Formazioni Rocciose</option>
+                <option value="Sentieri e Percorsi">Sentieri e Percorsi</option>
+                <option value="Altro">Altro</option>
+            </select>
+
+            <p class="error-text" v-if="errorMessage">{{ errorMessage }}</p>
+
             <div class="action-buttons">
                 <vButton testo="Salva" :fn="salvaZona" class="save-btn"/>
                 <vButton testo="Annulla" :fn="annullaDisegno" class="cancel-btn"/>
