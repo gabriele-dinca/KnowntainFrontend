@@ -110,7 +110,9 @@
     }
 
     // funzione per salvare la zona
-    function salvaZona() {
+    async function salvaZona() {
+        errorMessage.value = null
+
         // controllo che il nome sia stato inserito e che ci sia almeno una forma
         if (!nomeZona.value) {
             errorMessage.value = "Il nome è obbligatorio"
@@ -160,7 +162,7 @@
             nome: nomeZona.value,
             descrizione: descrizioneZona.value,
             tipo: tipoZona.value,
-            geojson: geoJsonData
+            features: JSON.stringify(geoJsonData)
         }
 
         // per ora stampo solo il layer in console
@@ -170,6 +172,33 @@
         console.log(JSON.stringify(geoJsonData, null, 2))
 
         //TODO: chiamare le API per inserire il nuovo layer nel DB
+        try {
+            // Compongo l'URL per la richiesta 
+            const HOST = import.meta.env.VITE_API_URL;
+            const END_POINT = HOST + '/mappa';
+
+            // Invio una richeista POST al backend
+            const response = await fetch(END_POINT, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'access-token': loggedUser.token 
+                },
+                body: JSON.stringify(datiZona)
+            });
+
+            // Trasformo la risposta in formato JSON
+            const data = await response.json();
+            console.log(data);
+
+            // Gestisco eventuali errori dal backend (401, 400, ecc.)
+            if (!response.ok) {
+                errorMessage.value = data.message;
+                return;
+            }
+        } catch (err) {
+            errorMessage.value = err.message;
+        }
 
         // pulisco tutto dopo il salvataggio
         layerDisegnati.forEach(layer => {
