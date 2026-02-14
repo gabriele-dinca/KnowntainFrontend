@@ -133,8 +133,6 @@
             return
         }
 
-        let geoJsonData
-
         // normalizza layer: se è un cerchio, lo converte in poligono usando turf (quello che uso anche per controllare se un punto è interno ad uun'area)
         function normalizza(layer) {
             if (layer instanceof L.Circle) {
@@ -146,30 +144,21 @@
             return layer.toGeoJSON()
         }
 
-        // se ho una sola forma, salvo il GeoJSON singolo
-        if (layerDisegnati.length === 1) {
-            geoJsonData = normalizza(layerDisegnati[0])
-        } else {
-            // se ho più forme, creo una FeatureCollection
-            const features = layerDisegnati.map(layer => normalizza(layer))
-            geoJsonData = {
-                type: 'FeatureCollection',
-                features: features
-            }
-        }
+        const features = layerDisegnati.map(layer => normalizza(layer))
 
         const datiZona = {
             nome: nomeZona.value,
             descrizione: descrizioneZona.value,
             tipo: tipoZona.value,
-            features: JSON.stringify(geoJsonData)
+            features: features
         }
+
+        console.log("dati zona:", datiZona);
 
         // per ora stampo solo il layer in console
         console.log('Nome zona:', nomeZona.value)
         console.log('Descrizione:', descrizioneZona.value)
         console.log('Tipo:', tipoZona.value)
-        console.log(JSON.stringify(geoJsonData, null, 2))
 
         //TODO: chiamare le API per inserire il nuovo layer nel DB
         try {
@@ -196,6 +185,8 @@
                 errorMessage.value = data.message;
                 return;
             }
+            /* Emetto l'avviso che zone sono state create */
+            emit('zone-created');
         } catch (err) {
             errorMessage.value = err.message;
         }
@@ -209,9 +200,6 @@
         nomeZona.value = ''
         descrizioneZona.value = ''
         tipoZona.value = ''
-
-        // emetto l'evento per notificare che la zona è stata creata
-        emit('zone-created', datiZona)
     }
 
     // pulisco tutto quando il componente viene smontato

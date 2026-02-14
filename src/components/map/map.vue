@@ -22,8 +22,9 @@
     const segnalazioni = ref([]);
     const aree = ref([]);
 
-    let markers = [];
-    let zones = [];
+    
+
+    let geoJsonData = [];
 
     async function getMapItems() {
         // Compongo l'URL per la richiesta 
@@ -48,12 +49,14 @@
                 console.error(response.status, response.body);
                 return;
             }
+
             
 
             segnalazioni.value = data.segnalazioni;
             aree.value = data.aree;
 
             // Segnalazini salvate nella array 'markers'
+            let markers = [];
             segnalazioni.value.forEach(element => {
                 markers.push({
                     type: "Feature",
@@ -64,6 +67,7 @@
             console.log('Segnalazioni:', markers);
 
             // Aree salvate nell'array 'zones'
+            let zones = [];
             aree.value.forEach(element => {
                 zones.push({
                     type: "Feature",
@@ -77,6 +81,32 @@
             });
             console.log('Aree:', zones);
 
+
+            // layer (dovrenno arrivare tramite chiamata API)
+            geoJsonData = [
+                {
+                    id: "layer_1",
+                    name: "Segnalazioni",
+                    visible: true,
+                    style: { color: 'red' },
+                    data: {
+                        type: "FeatureCollection",
+                        // Arriva tramite chiamata API
+                        features: markers
+                    }
+                },
+                {
+                    id: "layer_2",
+                    name: "Aree protette",
+                    visible: true,
+                    style: { color: 'green' },
+                    data: {
+                        type: "FeatureCollection",
+                        features: zones
+                    }
+                }
+            ];
+
         } catch (error) {
             // In caso di errore non gestito dal backend, mostro questo messaggio
             //errorMessage.value = "Errore di connessione al Server";
@@ -85,33 +115,10 @@
         }
     }
 
+    
+
     onBeforeMount(() => getMapItems());
 
-   
-    // layer (dovrenno arrivare tramite chiamata API)
-    const geoJsonData = [
-        {
-            id: "layer_1",
-            name: "Segnalazioni",
-            visible: true,
-            style: { color: 'red' },
-            data: {
-                type: "FeatureCollection",
-                // Arriva tramite chiamata API
-                features: markers
-            }
-        },
-        {
-            id: "layer_2",
-            name: "Aree protette",
-            visible: true,
-            style: { color: 'green' },
-            data: {
-                type: "FeatureCollection",
-                features: zones
-            }
-        }
-    ];
 
     onMounted (() => { //solo dopo che l'html è stato montato
         map.value = L.map(mapContainer.value).setView([46.0667, 11.1333], zoom.value); //definisco il centro e lo zoom
@@ -125,7 +132,7 @@
         emit('layers-loaded', infoLayers)
     })
 
-    const layersCache = {} // variabile in cui salvo i layer che servono all'utente come oggetti
+    let layersCache = {} // variabile in cui salvo i layer che servono all'utente come oggetti
     // fino a quando un layer non viene selezionato nel filtro, non viene nemmeno caricato
 
     function gestisciFiltro(newSelection) { //newSelection è l'array che mi arriva da filter.vue in cui ci sono gli id dei layer da mostrare 
@@ -172,6 +179,24 @@
         })
 
         userPosition.value = null;
+    }
+
+    // Hot reload della mappa dopo aver aggiunto nuove zone
+    // Inefficiente??? Lo so :-)
+    async function reloadMapItems() {
+        await getMapItems();
+
+        // rimuovo i layer precedenti
+        Object.values(layersCache).forEach(layer => map.value.removeLayer(layer))
+        layersCache = {}
+
+        // ridisegno tutte le zone e segnalazioni
+        geoJsonData.forEach(obj => {
+            if (obj.visible) {
+                layersCache[obj.id] = L.geoJSON(obj.data).addTo(map.value)
+                descrizioneOggettiLayer(layersCache[obj.id])
+            }
+        })
     }
 
     // passo il layer come parametro e aggiungo i popup per la descrizione ad ogni oggetto del layer stesso
@@ -278,7 +303,7 @@
         <vButton testo="La Mia Posizione" :fn="getUserLocation" id="position-btn"/>
 
         <!--TODO: rendere visibile i tool per aggiungere layer alla mappa solo ai dipendenti-->
-        <zoneEditor v-if="map && loggedUser.role==='dipendente'" :map="map" />
+        <zoneEditor v-if="map && loggedUser.role==='dipendente'" :map="map" @zone-created="reloadMapItems" />
        
         <div ref="mapContainer" class="mapContainer"></div>
     </div>
