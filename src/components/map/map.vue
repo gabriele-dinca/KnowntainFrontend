@@ -88,9 +88,6 @@
     onBeforeMount(() => getMapItems());
 
    
-
-
-
     // layer (dovrenno arrivare tramite chiamata API)
     const geoJsonData = [
         {
@@ -101,18 +98,7 @@
             data: {
                 type: "FeatureCollection",
                 // Arriva tramite chiamata API
-                features: markers /*[
-                    {
-                        type: "Feature",
-                        properties: { nome: "Pizzeria Napoli", rating: 5 },
-                        geometry: { type: "Point", coordinates: [11.1210, 46.0680] }
-                    },
-                    {
-                        type: "Feature",
-                        properties: { nome: "Sushi Zen", rating: 4 },
-                        geometry: { type: "Point", coordinates: [11.1250, 46.0710] }
-                    }
-                ]*/
+                features: markers
             }
         },
         {
@@ -122,131 +108,7 @@
             style: { color: 'green' },
             data: {
                 type: "FeatureCollection",
-                features: zones /*[
-                    {
-                        type: "Feature",
-                        properties: { nome: "Parco delle Albere" },
-                        geometry: {
-                            type: "Polygon",
-                            coordinates: [[
-                                [11.1150, 46.0650],
-                                [11.1180, 46.0650],
-                                [11.1180, 46.0620],
-                                [11.1150, 46.0620],
-                                [11.1150, 46.0650]
-                            ]]
-                        }
-                    }
-                ]*/
-            }
-        },
-        {
-            id: "layer_3",
-            name: "Strade forestali",
-            visible: true,
-            style: { color: 'blue' },
-            data: {
-                type: "FeatureCollection",
-                features: [
-                    {
-                        type: "Feature",
-                        properties: { nome: "Pista Ciclabile" },
-                        geometry: {
-                            type: "LineString",
-                            coordinates: [
-                                [11.1200, 46.0700],
-                                [11.1220, 46.0720],
-                                [11.1240, 46.0730]
-                            ]
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            id: "layer_4",
-            name: "Area test 1",
-            visible: true,
-            data: {
-                type: "Feature",
-                geometry: {
-                    coordinates: [
-                        [
-                            [
-                            11.070762295522854,
-                            46.111434099274646
-                            ],
-                            [
-                            11.070762295522854,
-                            46.06782124649308
-                            ],
-                            [
-                            11.208986689566245,
-                            46.06782124649308
-                            ],
-                            [
-                            11.208986689566245,
-                            46.111434099274646
-                            ],
-                            [
-                            11.070762295522854,
-                            46.111434099274646
-                            ]
-                        ]
-                    ],
-                    type: "Polygon"
-                }
-            }
-        },
-        {
-            id: "layer_5",
-            name: "Area test 2",
-            visible: true,
-            data: {
-                type: "Feature",
-                geometry: {
-                    "coordinates": [
-                    [
-                        [
-                        11.05964846800407,
-                        46.05088794266831
-                        ],
-                        [
-                        11.081340450756073,
-                        46.04398700229311
-                        ],
-                        [
-                        11.09095407951753,
-                        46.05088794266831
-                        ],
-                        [
-                        11.156801375245124,
-                        46.083631726495014
-                        ],
-                        [
-                        11.166754404147127,
-                        46.13128218914213
-                        ],
-                        [
-                        11.084978101449025,
-                        46.11449709364899
-                        ],
-                        [
-                        11.108222703639171,
-                        46.08209708771918
-                        ],
-                        [
-                        11.05964846800407,
-                        46.09097074611438
-                        ],
-                        [
-                        11.05964846800407,
-                        46.05088794266831
-                        ]
-                    ]
-                    ],
-                    "type": "Polygon"
-                }
+                features: zones
             }
         }
     ];
@@ -271,6 +133,9 @@
             // se il layer non esiste ancora in cache, lo creo (lazy creation) 
             if (!layersCache[obj.id]) {
                 layersCache[obj.id] = L.geoJSON(obj.data);
+
+                //aggiungo i popup alle features del layer (lo faccio quando salvo il layer in cache in modo da evitare di doverlo rifare ogni volta)
+                descrizioneOggettiLayer(layersCache[obj.id]);
             }
 
             // se mi è stata passata anche la posizione dell'utente, verifico se questo è dentro l'area di un poligono
@@ -309,6 +174,27 @@
         userPosition.value = null;
     }
 
+    // passo il layer come parametro e aggiungo i popup per la descrizione ad ogni oggetto del layer stesso
+    function descrizioneOggettiLayer(leafletLayer) {
+        leafletLayer.eachLayer(layer => {
+
+            // attributi del layer
+            const proprietaLayer = layer.feature?.properties;
+
+            if (proprietaLayer) {
+                let contenuto = "";
+                // aggiungo nome, descrizione e tipo (solo se ci sono)
+                if (proprietaLayer.nome) contenuto += "<strong>" + proprietaLayer.nome + "</strong>";
+                if (proprietaLayer.descrizione) contenuto += "<br>" + proprietaLayer.descrizione;
+                if (proprietaLayer.tipo) contenuto += "<br><small>(" + proprietaLayer.tipo + ")</small>";
+
+                // aggiungo il popup solo se c'è effettivamente scritto dentro qualcosa
+                if (contenuto) {
+                    layer.bindPopup(contenuto);
+                }
+            }
+        })
+    }
 
     // icone dei marker colorati
     const getColoredIcon = (color) => {
