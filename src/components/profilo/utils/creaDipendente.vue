@@ -1,7 +1,7 @@
 <script setup>
   import { ref } from "vue";
   import vButton from "../../utils/vButton.vue"
-  import { setLoggedUser,loggedUser } from "../../../states/user.js";
+  import { loggedUser } from "../../../states/user.js";
   import Loader from "../../utils/Loader.vue";
 
     function resetForm() {
@@ -25,7 +25,7 @@
   const errorMessage = ref("");     // Messaggio d'errore
   const showPassword = ref(false);  // Visibilità Password
   const loading = ref(false);       // Loader
-  const confirmMsg = ref(false);
+  const confirmMsg = ref(false);    // Messaggio di conferma avvenuta registrazione
 
   async function register() {
     
@@ -46,42 +46,44 @@
     const END_POINT = HOST + '/dipendenti/create';
 
     try {
-        loading.value = true;  // Parte il loader
+      loading.value = true;  // Parte il loader
 
-        // Invio la richiesta POST al backend
-        const response = await fetch(END_POINT, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'access-token': loggedUser.token
-            },
-            body: JSON.stringify( {
-                email: email.value, 
-                password: password.value,
-                nome: nome.value,
-                cognome: cognome.value,
-                isAdmin: isAdmin.value
-            })
-        });
+      // Invio la richiesta POST al backend
+      const response = await fetch(END_POINT, {
+          method: 'POST',
+          headers: { 
+              'Content-Type': 'application/json',
+              'access-token': loggedUser.token
+          },
+          body: JSON.stringify( {
+              email: email.value, 
+              password: password.value,
+              nome: nome.value,
+              cognome: cognome.value,
+              isAdmin: isAdmin.value
+          })
+      });
 
-        // Trasformo la risposta in formato JSON
-        const data = await response.json();
-        console.log(data);
+      // Trasformo la risposta in formato JSON
+      const data = await response.json();
+      console.log(data);
 
-        // Gestisco eventuali errori dal backend (401, 400, ecc.)
-        if (!response.ok) {
-            errorMessage.value = data.message;
-            loading.value = false;
-            return;
-        }
+      // Gestisco eventuali errori dal backend (401, 400, ecc.)
+      if (!response.ok) {
+          errorMessage.value = data.message;
+          loading.value = false;
+          return;
+      }
 
-        confirmMsg.value = true;
-        errorMessage.value = null
-        resetForm();
+      // Resetto i campi del form e modifico lo stato dei messaggi
+      confirmMsg.value = true;
+      errorMessage.value = null
+      resetForm();
 
-        setTimeout(() => {
-        confirmMsg.value = false;
-        }, 3000);
+      // Il messaggio di conseferma scopare dopo 3 secondi
+      setTimeout(() => {
+      confirmMsg.value = false;
+      }, 3000);
 
     } catch (error) {
         // In caso di errore non gestito dal backend, mostro questo messaggio
@@ -101,13 +103,13 @@
       <input type="text" v-model="cognome" placeholder="Cognome" />
       <input type="email" v-model="email" placeholder="Email" />
       <div class="admin-toggle">
-            <span>Account amministratore</span>
+        <span>Account amministratore</span>
 
-            <label class="switch">
-                <input type="checkbox" v-model="isAdmin" />
-                <span class="slider"></span>
-            </label>
-        </div>
+        <label class="switch">
+            <input type="checkbox" v-model="isAdmin" />
+            <span class="slider"></span>
+        </label>
+      </div>
       <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Password" />
       <input :type="showPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Conferma password" />
       <div id="show-psw">
@@ -132,8 +134,8 @@
   background-color: var(--knt-abs-white);
   box-shadow: rgb(108, 108, 108) 10px 10px 20px;
   max-width: 400px;
-  /*margin: 0 auto;*/
-
+  height: 80vh;
+  overflow-y: scroll;
   text-align: center;
 
 }
