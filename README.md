@@ -1,4 +1,4 @@
-# deploy on render:
+# Deploy on render:
 https://knowntain.onrender.com
 
 # Repository backend
