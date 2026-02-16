@@ -134,8 +134,6 @@
   background-color: var(--knt-abs-white);
   box-shadow: rgb(108, 108, 108) 10px 10px 20px;
   max-width: 400px;
-  height: 80vh;
-  overflow-y: scroll;
   text-align: center;
 
 }
