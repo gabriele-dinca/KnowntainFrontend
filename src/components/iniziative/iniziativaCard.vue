@@ -21,7 +21,9 @@ const errorOccured = ref(false);
 
 const puntiAssegnati = ref(0);
 const confirmMsg = ref(false);
-const emit = defineEmits(['refresh'])
+const isSubmitting = ref(false);
+
+const emit = defineEmits(['refresh']);
 
 async function assignPoints() {
   // Compongo l'URL per la richiesta 
@@ -29,6 +31,9 @@ async function assignPoints() {
   const END_POINT = `${HOST}/iniziative/${props.id}`;
 
   try {
+    // Disabilito il Pulsante per assegnare punti
+    isSubmitting.value = true;
+
     // Invio una richeista POST al backend
     const response = await fetch(END_POINT, {
       method: 'PATCH',
@@ -63,6 +68,8 @@ async function assignPoints() {
     errorOccured.value = true;
     errorMessage = err.message;
     console.log(err);
+  } finally {
+    isSubmitting.value = false;
   }
 }
 
@@ -97,7 +104,7 @@ function mostraInput() {
     </div>
     <div class="user-controls" v-if="showInput">
       <input type="number" placeholder="Punti" v-model="puntiAssegnati">
-      <vButton testo="OK" :fn="assignPoints" />
+      <vButton testo="OK" :fn="assignPoints" :disabled="isSubmitting" />
     </div>
     <div class="infos">
       <p v-if="confirmMsg">Iniziativa Aggiornata ✅</p>
