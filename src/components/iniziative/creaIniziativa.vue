@@ -9,19 +9,25 @@
 
   const errorMessage = ref("");
   const invioRiuscito = ref(false);
+  const isSubmitting = ref(false);
 
   async function sendIniziativa() {
+    // Impedisce invii multipli della stessa segnalazione
+    if (isSubmitting.value) return;
+
     if (!titolo.value || !descrizione.value || !punti.value) {
       errorMessage.value = "Tutti i campi sono obbligatori";
       return
     }
 
     if (punti.value <= 0) {
-        errorMessage.value = "I punti devono avere un valore positivo";
-        return
+      errorMessage.value = "I punti devono avere un valore positivo";
+      return
     }
 
     try {
+      // Disabilito nuovi invii
+      isSubmitting.value = true;
 
       // Compongo l'URL per la richiesta 
       const HOST = import.meta.env.VITE_API_URL;
@@ -63,6 +69,8 @@
       }, 3000);
     } catch (err) {
       errorMessage.value = err.message;
+    } finally {
+      isSubmitting.value = false;
     }
   }
 
@@ -89,7 +97,7 @@
       <p v-if="invioRiuscito">Iniziativa Ricevuta ✅</p>
 
       <div class="button-group">
-        <vButton testo="Invia" :fn="sendIniziativa" />
+        <vButton testo="Invia" :fn="sendIniziativa" :disabled="isSubmitting" />
       </div>
   </div>
 </template>
