@@ -1,11 +1,14 @@
 <script setup>
+import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import { clearLoggedUser } from "../states/user";
 
 const router = useRouter();
 
 const goToLogin = () => router.push('/login');
 const goToRegister = () => router.push('/register');
 
+onBeforeMount(() => clearLoggedUser());
 
 </script>
 
