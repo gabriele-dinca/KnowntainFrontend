@@ -8,21 +8,23 @@ export default defineConfig({
   plugins: [
     vue(),
     basicSsl(),
-    VitePWA({ 
+    VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
       devOptions: {
         enabled: true,
         type: 'classic'
       },
-      
+
       manifest: {
+        id: '/',
         name: 'Knowntain',
         short_name: 'Knowntain',
         description: 'A biodiversity map',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
+        orientation: 'portrait',
         start_url: '/',
         scope: '/',
 
@@ -30,17 +32,20 @@ export default defineConfig({
           {
             src: 'forest.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
             src: 'forest.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
             src: 'forest.svg',
             sizes: 'any',
-            type: 'image/svg+xml'
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
           }
         ]
       }
