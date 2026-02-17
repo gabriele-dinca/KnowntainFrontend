@@ -9,14 +9,21 @@
 
   const errorMessage = ref("");
   const invioRiuscito = ref(false);
+  const isSubmitting = ref(false);
 
   async function sendSegnalazione() {
+    // Impedisce invii multipli della stessa segnalazione
+    if (isSubmitting.value) return;
+
     if (!titolo.value || !descrizione.value || !tipo.value) {
       errorMessage.value = "Tutti i campi sono obbligatori";
       return
     }
 
     try {
+      // Disabilito nuovi invii
+      isSubmitting.value = true;
+
       // Cerco di ottenere le coords dell'utente
       const coords = await getUserLocation();
 
@@ -63,6 +70,8 @@
     } catch (err) {
       errorMessage.value = err.message;
       console.error("Errore localizzazione:", err.message);
+    } finally {
+      isSubmitting.value = false;
     }
   }
 
@@ -117,7 +126,7 @@
       <p v-if="invioRiuscito">Segnalazione Ricevuta ✅</p>
 
       <div class="button-group">
-        <vButton testo="Invia" :fn="sendSegnalazione" />
+        <vButton testo="Invia" :fn="sendSegnalazione" :disabled="isSubmitting" />
       </div>
   </div>
 </template>
