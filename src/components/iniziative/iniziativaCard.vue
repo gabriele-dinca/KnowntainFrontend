@@ -70,6 +70,7 @@ async function assignPoints() {
     console.log(err);
   } finally {
     isSubmitting.value = false;
+    puntiAssegnati.value = 0;
   }
 }
 
