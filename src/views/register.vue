@@ -3,7 +3,7 @@
   import { useRouter } from "vue-router";
   import vButton from "../components/utils/vButton.vue"
   import { setLoggedUser } from "../states/user";
-import Loader from "../components/utils/Loader.vue";
+  import Loader from "../components/utils/Loader.vue";
 
   const router = useRouter();
 

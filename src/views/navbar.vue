@@ -1,7 +1,6 @@
 <script setup>
   import { ref } from 'vue';
     import { RouterLink } from 'vue-router';
-    const name = !!localStorage.getItem('token')?localStorage.getItem('nome') : false;
     let menuOpen = ref(false);
 
     // Al click dell'hamburger

@@ -1,7 +1,5 @@
 <script setup>
-import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-import { clearLoggedUser } from "../states/user";
 
 const router = useRouter();
 
