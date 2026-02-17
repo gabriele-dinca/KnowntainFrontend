@@ -19,7 +19,7 @@ const goToRegister = () => router.push('/register');
 
         <div class="header__buttons">
             <button class="button" id="login" @click="goToLogin"><a href="#">Accedi</a></button>
-            <button class="button" id="register" @click="goToRegister"><a href="#">Registarti</a></button>
+            <button class="button" id="register" @click="goToRegister"><a href="#">Registrati</a></button>
         </div>
     </header>
 
