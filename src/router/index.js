@@ -107,6 +107,8 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !loggedIn) {
     next('/welcome');
+  }else if(!requiresAuth && loggedIn) {
+    next('/')
   } else {
     next();
   }

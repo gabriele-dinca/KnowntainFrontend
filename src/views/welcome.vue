@@ -8,7 +8,6 @@ const router = useRouter();
 const goToLogin = () => router.push('/login');
 const goToRegister = () => router.push('/register');
 
-onBeforeMount(() => clearLoggedUser());
 
 </script>
 
